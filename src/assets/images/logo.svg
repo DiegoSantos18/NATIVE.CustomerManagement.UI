@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Background Radial Gradient -->
+    <radialGradient id="bgGradient" cx="25%" cy="25%" r="75%" fx="20%" fy="20%">
+      <stop offset="0%" stop-color="#3a3a3a" />
+      <stop offset="40%" stop-color="#181818" />
+      <stop offset="100%" stop-color="#000000" />
+    </radialGradient>
+
+    <!-- Front Layer Gradient (Red to Purple to Blue) -->
+    <linearGradient id="frontGradient" x1="0%" y1="20%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="#FF001E" />
+      <stop offset="45%" stop-color="#D00055" />
+      <stop offset="75%" stop-color="#7B0099" />
+      <stop offset="100%" stop-color="#002BE7" />
+    </linearGradient>
+
+    <!-- Back Layer Gradient (Blue to Dark Purple) -->
+    <linearGradient id="backGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0044FF" />
+      <stop offset="50%" stop-color="#220077" />
+      <stop offset="100%" stop-color="#0B0033" />
+    </linearGradient>
+
+    <!-- Front "1" Gradient (Red to Purple) -->
+    <linearGradient id="oneFrontGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF0000" />
+      <stop offset="50%" stop-color="#A00066" />
+      <stop offset="100%" stop-color="#1100AA" />
+    </linearGradient>
+
+    <!-- Front "0" Gradient (Red to Magenta to Purple) -->
+    <linearGradient id="zeroFrontGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF002B" />
+      <stop offset="50%" stop-color="#E1004C" />
+      <stop offset="85%" stop-color="#880088" />
+      <stop offset="100%" stop-color="#440099" />
+    </linearGradient>
+
+    <!-- Back "0" Gradient (Darker blue-purple offset) -->
+    <linearGradient id="zeroBackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#110055" />
+      <stop offset="50%" stop-color="#0033CC" />
+      <stop offset="100%" stop-color="#001155" />
+    </linearGradient>
+  </defs>
+
+  <!-- Circular Background -->
+  <circle cx="250" cy="250" r="240" fill="url(#bgGradient)" />
+
+  <g transform="translate(10, 0)">
+    <!-- BACK LAYER (NUMBER 1 - Shadow/Depth offset) -->
+    <path d="M 172,105 L 208,105 L 208,370 L 168,370 L 168,180 L 138,208 L 138,168 Z" 
+          fill="url(#backGradient)" opacity="0.9" />
+
+    <!-- BACK LAYER (NUMBER 0 - Shadow/Depth offset) -->
+    <path d="M 270,135 
+             C 340,135 375,190 375,260 
+             C 375,335 335,385 265,385 
+             C 205,385 175,340 175,270 
+             C 175,195 210,135 270,135 Z
+             M 268,175 
+             C 230,175 213,210 213,260 
+             C 213,310 230,345 268,345 
+             C 305,345 337,310 337,260 
+             C 337,210 305,175 268,175 Z" 
+          fill="url(#backGradient)" opacity="0.85" />
+
+    <!-- 3D CONNECTING FACES (Extrusions between back and front) -->
+    <!-- Number 1 Extrusion details -->
+    <polygon points="120,210 138,208 138,168 120,210" fill="#700040" opacity="0.6"/>
+    <polygon points="168,370 208,370 208,370 168,370" fill="#001155" />
+    <polygon points="120,210 168,160 168,180 138,208" fill="#D00033" opacity="0.7"/>
+
+    <!-- FRONT LAYER (NUMBER 1) -->
+    <path d="M 152,145 L 188,145 L 188,350 L 148,350 L 148,200 L 120,225 L 120,185 Z" 
+          fill="url(#oneFrontGradient)" />
+
+    <!-- FRONT LAYER (NUMBER 0) -->
+    <path d="M 285,135 
+             C 355,135 385,190 385,260 
+             C 385,330 345,385 275,385 
+             C 215,385 190,335 190,265 
+             C 190,195 225,135 285,135 Z
+             M 285,178 
+             C 245,178 228,212 228,260 
+             C 228,308 245,342 285,342 
+             C 325,342 347,308 347,260 
+             C 347,212 325,178 285,178 Z" 
+          fill="url(#zeroFrontGradient)" />
+
+    <!-- TEXT: ANOS -->
+    <text x="296" y="262" 
+          font-family="System-UI, -apple-system, BlinkMacSystemFont, 'Montserrat', 'Segoe UI', 'Helvetica Neue', sans-serif" 
+          font-weight="800" 
+          font-size="44" 
+          fill="#FFFFFF" 
+          letter-spacing="1.5">ANOS</text>
+
+    <!-- TEXT: native -->
+    <text x="306" y="306" 
+          font-family="System-UI, -apple-system, BlinkMacSystemFont, 'Montserrat', 'Segoe UI', 'Helvetica Neue', sans-serif" 
+          font-weight="700" 
+          font-size="36" 
+          fill="#FFFFFF" 
+          letter-spacing="-1">native</text>
+  </g>
+</svg>

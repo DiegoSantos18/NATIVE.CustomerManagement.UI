@@ -1,0 +1,71 @@
+// ==========================================================================
+// DESIGN SYSTEM - NATIVE CUSTOMER MANAGEMENT UI
+// Variáveis Globais de Cores, Temas (Dark/Light), Superfícies e Tipografia
+// ==========================================================================
+
+// Cores Base
+$color-wine-dark: #881337;
+$color-blue-light: #1d4ed8;
+$color-orange-accent: #f36d20;
+
+// Tipografia e Elevações
+$font-sans:
+  system-ui,
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  sans-serif;
+
+// ==========================================================================
+// TEMA ESCURO (DARK MODE)
+// ==========================================================================
+:root,
+[data-theme='dark'] {
+  --bg-primary: #020014;
+  --bg-surface: #0a004b;
+  --bg-surface-hover: #17006b;
+  --border-color: #0a004b;
+  --border-hover: rgba(29, 78, 216, 0.12);
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --primary: #f36d20;
+  --accent-glow: rgba(29, 78, 216, 0.12);
+  --bg-gradient: linear-gradient(135deg, #881337 0%, #0a004b 50%, #020014 100%);
+
+  // Shadows
+  --shadow-elevation: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-modal: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-sidebar-lateral: 12px 0 40px rgba(0, 0, 0, 0.8);
+  --shadow-glow-card: 0 4px 14px var(--accent-glow);
+  --shadow-glow-card-hover: 0 6px 20px var(--accent-glow);
+  --shadow-drop-illustration: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.2));
+  --shadow-footer: 0 -4px 16px rgba(0, 0, 0, 0.4);
+}
+
+// ==========================================================================
+// TEMA CLARO (LIGHT MODE)
+// ==========================================================================
+[data-theme='light'] {
+  --bg-primary: #f4f6f8;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-hover: #1d4ed8;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --primary: #1d4ed8;
+  --accent-glow: rgba(29, 78, 216, 0.12);
+  --bg-gradient: linear-gradient(135deg, #1d4ed8 0%, #4f46e5 50%, #881337 100%);
+
+  // Shadows
+  --shadow-elevation: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-sidebar-lateral: 12px 0 40px rgba(0, 0, 0, 0.3);
+  --shadow-glow-card: 0 4px 14px var(--accent-glow);
+  --shadow-glow-card-hover: 0 6px 20px var(--accent-glow);
+  --shadow-drop-illustration: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.08));
+  --shadow-footer: 0 -4px 16px rgba(0, 0, 0, 0.08);
+}
