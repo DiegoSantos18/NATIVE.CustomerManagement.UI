@@ -1,0 +1,37 @@
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-gradient);
+
+  .layout-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    .layout-breadcrumb-container {
+      padding: 0.2rem 1.5rem;
+      background-color: transparent;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+
+    .page-content {
+      flex: 1;
+      padding: 0.2rem 1.5rem;
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &.fade-transition {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+    }
+  }
+}

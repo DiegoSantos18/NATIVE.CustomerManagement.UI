@@ -1,0 +1,56 @@
+.app-breadcrumb {
+  display: flex;
+  align-items: center;
+
+  .MuiBreadcrumbs-root {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+
+    .MuiBreadcrumbs-separator {
+      color: var(--text-muted);
+      margin: 0 0.4rem;
+    }
+  }
+
+  .breadcrumb-link,
+  .breadcrumb-current {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+
+    .breadcrumb-icon {
+      display: inline-flex;
+      font-size: 1rem;
+    }
+  }
+
+  .breadcrumb-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+
+    &:hover {
+      color: var(--text-main);
+      background-color: var(--accent-glow);
+      box-shadow: var(--shadow-glow-inset);
+
+      .breadcrumb-icon {
+        color: var(--text-main);
+      }
+    }
+  }
+
+  .breadcrumb-current {
+    color: var(--text-main);
+    font-weight: 600;
+
+    .breadcrumb-icon {
+      color: var(--text-main);
+    }
+  }
+}
