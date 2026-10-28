@@ -44,81 +44,54 @@ graph TD
 
 - **Menu Lateral Inteligente (Sidebar):** Recolhimento e colapso automático de submenus/grupos ativos ao alternar de rota ou expandir novas seções.
 
+---
+
 ## 🌳 Estrutura de Pastas
 
+<details>
+<summary><b>📂 NATIVE.CustomerManagement.UI/</b></summary>
+
 - 📁 **.github/** — Workflows de CI/CD (GitHub Actions)
-
 - 📁 **.vscode/** — Configurações e extensões recomendadas
-
 - 📁 **public/** — Ativos estáticos públicos (Favicon, SVG icons)
-
 - 📁 **src/**
-
   - 📁 **api/** — Clientes de API REST (Axios) e instâncias de Socket.io
-
   - 📁 **assets/** — Recursos estáticos da aplicação
-
     - 📁 **illustrations/** — Ilustrações vetoriais (ex: página 404)
-
     - 📁 **images/** — Logos e favicons nos formatos dark/light (`logo-dark.png`, `logo-light.png`)
-
     - 📁 **styles/** — Estilos globais, mixins e o Design System (`_variables.scss` com variáveis semânticas de cores, gradientes e sombras)
-
   - 📁 **components/** — Componentes reutilizáveis de UI
-
     - 📁 **common/** — Componentes compartilhados (`BreadcrumbComponent`, `FooterComponent`, `HeaderComponent`, `SidebarComponent`, `LoadingComponent`)
-
       - 📁 **mui/** — Centralização de componentes e ícones do Material UI (`components.ts`, `icons.ts`)
-
     - 📁 **layout/** — Estrutura de layout principal da aplicação (`MainLayout`)
-
   - 📁 **hooks/** — Custom Hooks do React (`useAppTheme`, `useSidebarToggle`, `useFaviconTheme`)
-
   - 📁 **pages/** — Views/Páginas principais da aplicação (`Dashboard`, `Customers`, `CustomerDetails`, `NotFound`)
-
   - 📁 **providers/** — Provedores de contexto globais (`AppThemeProvider`, `FaviconThemeProvider`, `ThemeContextProvider`)
-
   - 📁 **routes/** — Configuração e proteção de rotas da aplicação (`AppRoutes`, `routeConfig.ts`, `loadWithDelay.ts`)
-
   - 📁 **types/** — Tipagens globais e contratos do domínio (`customer.ts`, `theme.ts`, `navigation.ts`)
-
   - 📁 **utils/** — Funções utilitárias e formatadores
-
   - 📁 **validators/** — Schemas de validação de formulários (Zod)
-
   - 📄 `App.tsx` — Componente Raiz da Aplicação
-
   - 📄 `main.tsx` — Ponto de entrada e renderização do React DOM
-
   - 📄 `vite-env.d.ts` — Tipagens do ambiente Vite
-
 - 📄 `.editorconfig` — Padronização de formatação do editor
-
 - 📄 `.env.example` — Modelo de variáveis de ambiente
-
 - 📄 `.gitignore` — Arquivos ignorados pelo controle de versão
-
 - 📄 `.nvmrc` — Versão padronizada do Node.js
-
 - 📄 `.prettierrc` — Regras de formatação de código do Prettier
-
 - 📄 `eslint.config.js` — Configuração do ESLint v9
-
 - 📄 `index.html` — HTML principal e container da aplicação React
-
 - 📄 `package-lock.json` — Registo de versões exatas das dependências npm
-
 - 📄 `package.json` — Dependências e scripts do projeto
-
 - 📄 `README.md` — Documentação da UI
-
 - 📄 `tsconfig.json` — Configuração base do TypeScript
-
 - 📄 `tsconfig.app.json` — Configuração TypeScript da aplicação React
-
 - 📄 `tsconfig.node.json` — Configuração TypeScript do Vite/Node
-
 - 📄 `vite.config.ts` — Configuração do bundler Vite (Porta 4200)
+
+</details>
+
+---
 
 ## 🚀 Pré-requisitos e Gestão de Versão (NVM & Node.js)
 
