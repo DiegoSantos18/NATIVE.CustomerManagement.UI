@@ -1,4 +1,6 @@
 export {
+  Alert,
+  Snackbar,
   CssBaseline,
   Breadcrumbs,
   IconButton,

@@ -1,5 +1,5 @@
-import { useAppTheme } from '@/hooks';
 import { useState, type MouseEvent } from 'react';
+import { useAppTheme, useNotification } from '@/hooks';
 import {
   DarkModeIcon,
   LightModeIcon,
@@ -18,29 +18,33 @@ import './HeaderComponent.scss';
 
 export function HeaderComponent() {
   const { mode, toggleTheme } = useAppTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { showNotification } = useNotification();
+
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
   const open = Boolean(anchorEl);
 
   const handleOpenMenu = (event: MouseEvent<HTMLElement>) => {
-    if (anchorEl) {
-      setAnchorEl(null);
-    } else {
-      setAnchorEl(event.currentTarget);
-    }
-  };
-
-  // TODO: Implementar funcionalidades futuras
-  const handleNotImplemented = () => {
-    alert('Funcionalidade não implementada!');
+    setAnchorEl(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
+  // TODO: Implementar funcionalidades futuras
+  const handleNotImplemented = () => {
+    handleCloseMenu();
+
+    showNotification({
+      severity: 'info',
+      message: 'Funcionalidade não implementada.',
+    });
+  };
+
   return (
     <header className="app-header">
-      <div className="header-left"></div>
+      <div className="header-left">{/* TODO: Implementar funcionalidades futuras */}</div>
 
       <div className="header-right">
         <Tooltip title={mode === 'dark' ? 'Modo Claro' : 'Modo Escuro'}>
@@ -55,7 +59,15 @@ export function HeaderComponent() {
 
         <div className="user-profile">
           <Tooltip title="Ver Perfil">
-            <IconButton onClick={handleOpenMenu} size="small" sx={{ ml: 1 }}>
+            <IconButton
+              onClick={handleOpenMenu}
+              size="small"
+              aria-label="Abrir menu do usuário"
+              aria-controls={open ? 'user-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              sx={{ ml: 1 }}
+            >
               <Avatar
                 sx={{
                   width: 36,
@@ -73,6 +85,7 @@ export function HeaderComponent() {
           </Tooltip>
 
           <Menu
+            id="user-menu"
             anchorEl={anchorEl}
             open={open}
             onClose={handleCloseMenu}
@@ -92,22 +105,22 @@ export function HeaderComponent() {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            <MenuItem onClick={handleCloseMenu}>
+            <MenuItem onClick={handleNotImplemented}>
               <ListItemIcon>
                 <PersonIcon fontSize="small" sx={{ color: 'var(--text-muted)' }} />
               </ListItemIcon>
-              <ListItemText primary="Meu Perfil" onClick={handleNotImplemented} />
+
+              <ListItemText primary="Meu Perfil" />
             </MenuItem>
+
             <Divider sx={{ borderColor: 'var(--border-color)' }} />
-            <MenuItem onClick={handleCloseMenu}>
+
+            <MenuItem onClick={handleNotImplemented}>
               <ListItemIcon>
                 <LogoutIcon fontSize="small" sx={{ color: 'var(--primary)' }} />
               </ListItemIcon>
-              <ListItemText
-                primary="Sair"
-                sx={{ color: 'var(--primary)' }}
-                onClick={handleNotImplemented}
-              />
+
+              <ListItemText primary="Sair" sx={{ color: 'var(--primary)' }} />
             </MenuItem>
           </Menu>
         </div>

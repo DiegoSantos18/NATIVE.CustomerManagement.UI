@@ -1,16 +1,18 @@
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@/components/common/mui';
-import { AppThemeProvider, FaviconProvider } from '@/providers';
+import { AppThemeProvider, FaviconProvider, NotificationProvider } from '@/providers';
 import { AppRoutes } from '@/routes';
 
 export function App() {
   return (
     <AppThemeProvider>
-      <FaviconProvider />
-      <CssBaseline />
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <NotificationProvider>
+        <FaviconProvider />
+        <CssBaseline />
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </NotificationProvider>
     </AppThemeProvider>
   );
 }

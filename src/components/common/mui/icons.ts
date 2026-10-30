@@ -20,4 +20,9 @@ export {
   Group as GroupIcon,
   EditNote as EditDocumentIcon,
   NavigateNext as NavigateNextIcon,
+  ErrorOutlined as ErrorOutlineIcon,
+  WarningAmber as WarningAmberIcon,
+  CheckCircle as CheckCircleIcon,
+  Info as InfoIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';

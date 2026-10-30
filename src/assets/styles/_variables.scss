@@ -42,6 +42,32 @@ $font-sans:
   --shadow-glow-card-hover: 0 6px 20px var(--accent-glow);
   --shadow-drop-illustration: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.2));
   --shadow-footer: 0 -4px 16px rgba(0, 0, 0, 0.4);
+
+  // Snackbar
+  // Error
+  --snackbar-error-bg: #351318;
+  --snackbar-error-border: #8f303b;
+  --snackbar-error-text: #ffe4e6;
+  --snackbar-error-icon: #ff737d;
+  --snackbar-error-progress: #ff737d;
+  // Warning
+  --snackbar-warning-bg: #33280d;
+  --snackbar-warning-border: #8b681c;
+  --snackbar-warning-text: #fef3c7;
+  --snackbar-warning-icon: #facc15;
+  --snackbar-warning-progress: #facc15;
+  // Success
+  --snackbar-success-bg: #102d27;
+  --snackbar-success-border: #28765d;
+  --snackbar-success-text: #dcfce7;
+  --snackbar-success-icon: #4ade80;
+  --snackbar-success-progress: #4ade80;
+  // Info
+  --snackbar-info-bg: #12283d;
+  --snackbar-info-border: #28618c;
+  --snackbar-info-text: #dbeafe;
+  --snackbar-info-icon: #60a5fa;
+  --snackbar-info-progress: #60a5fa;
 }
 
 // ==========================================================================
@@ -68,4 +94,30 @@ $font-sans:
   --shadow-glow-card-hover: 0 6px 20px var(--accent-glow);
   --shadow-drop-illustration: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.08));
   --shadow-footer: 0 -4px 16px rgba(0, 0, 0, 0.08);
+
+  // Snackbar
+  // Error
+  --snackbar-error-bg: #fff1f2;
+  --snackbar-error-border: #fecdd3;
+  --snackbar-error-text: #881337;
+  --snackbar-error-icon: #e11d48;
+  --snackbar-error-progress: #e11d48;
+  // Warning
+  --snackbar-warning-bg: #fffbeb;
+  --snackbar-warning-border: #fde68a;
+  --snackbar-warning-text: #78350f;
+  --snackbar-warning-icon: #d97706;
+  --snackbar-warning-progress: #d97706;
+  // Success
+  --snackbar-success-bg: #f0fdf4;
+  --snackbar-success-border: #bbf7d0;
+  --snackbar-success-text: #14532d;
+  --snackbar-success-icon: #16a34a;
+  --snackbar-success-progress: #16a34a;
+  // Info
+  --snackbar-info-bg: #eff6ff;
+  --snackbar-info-border: #bfdbfe;
+  --snackbar-info-text: #1e3a8a;
+  --snackbar-info-icon: #2563eb;
+  --snackbar-info-progress: #2563eb;
 }
