@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { MainLayout } from '@/components/layout';
-import { LoadingComponent } from '@/components/common';
+import { LoadingComponent } from '@/components/common/loading/LoadingComponent';
 import type { ComponentType } from 'react';
 
 const loadWithDelay = <T extends ComponentType<unknown>>(

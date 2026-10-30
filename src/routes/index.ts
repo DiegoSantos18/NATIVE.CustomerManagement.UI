@@ -1,2 +1,2 @@
-export * from './AppRoutes';
-export * from './routeConfig';
+export { AppRoutes } from './AppRoutes';
+export { ROUTE_CONFIG } from './routeConfig';

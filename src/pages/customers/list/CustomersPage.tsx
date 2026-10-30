@@ -1,4 +1,4 @@
-import { PeopleIcon, Box, Typography } from '@/components/common';
+import { PeopleIcon, Box, Typography } from '@/components/common/mui';
 import './CustomersPage.scss';
 
 export function CustomersPage() {

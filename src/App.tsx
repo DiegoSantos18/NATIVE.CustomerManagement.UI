@@ -1,5 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
-import { CssBaseline } from '@/components/common';
+import { CssBaseline } from '@/components/common/mui';
 import { AppThemeProvider, FaviconProvider } from '@/providers';
 import { AppRoutes } from '@/routes';
 

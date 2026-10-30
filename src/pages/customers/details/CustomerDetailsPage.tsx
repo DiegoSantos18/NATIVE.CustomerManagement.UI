@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { PersonIcon, Box, Typography } from '@/components/common';
+import { PersonIcon, Box, Typography } from '@/components/common/mui';
 import './CustomerDetailsPage.scss';
 
 export function CustomerDetailsPage() {

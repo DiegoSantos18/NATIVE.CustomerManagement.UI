@@ -10,8 +10,8 @@ import {
   IconButton,
   Tooltip,
   Collapse,
-  FooterComponent,
-} from '@/components/common';
+} from '@/components/common/mui';
+import { FooterComponent } from '@/components/common/footer/FooterComponent';
 import { LogoDarkPNG, LogoLightPNG } from '@/assets';
 import { useSidebarToggle, useAppTheme } from '@/hooks';
 import './SidebarComponent.scss';

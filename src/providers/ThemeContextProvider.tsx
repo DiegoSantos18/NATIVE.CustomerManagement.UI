@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { type Theme } from '@/components/common';
+import { type Theme } from '@/components/common/mui';
 
 interface ThemeContextData {
   mode: 'light' | 'dark';

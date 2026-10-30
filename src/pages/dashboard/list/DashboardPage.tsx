@@ -6,7 +6,7 @@ import {
   Typography,
   Card,
   CardContent,
-} from '@/components/common';
+} from '@/components/common/mui';
 import './DashboardPage.scss';
 
 export function DashboardPage() {

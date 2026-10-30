@@ -13,7 +13,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-} from '@/components/common';
+} from '@/components/common/mui';
 import './HeaderComponent.scss';
 
 export function HeaderComponent() {
@@ -27,6 +27,11 @@ export function HeaderComponent() {
     } else {
       setAnchorEl(event.currentTarget);
     }
+  };
+
+  // TODO: Implementar funcionalidades futuras
+  const handleNotImplemented = () => {
+    alert('Funcionalidade não implementada!');
   };
 
   const handleCloseMenu = () => {
@@ -91,14 +96,18 @@ export function HeaderComponent() {
               <ListItemIcon>
                 <PersonIcon fontSize="small" sx={{ color: 'var(--text-muted)' }} />
               </ListItemIcon>
-              <ListItemText primary="Meu Perfil" />
+              <ListItemText primary="Meu Perfil" onClick={handleNotImplemented} />
             </MenuItem>
             <Divider sx={{ borderColor: 'var(--border-color)' }} />
             <MenuItem onClick={handleCloseMenu}>
               <ListItemIcon>
                 <LogoutIcon fontSize="small" sx={{ color: 'var(--primary)' }} />
               </ListItemIcon>
-              <ListItemText primary="Sair" sx={{ color: 'var(--primary)' }} />
+              <ListItemText
+                primary="Sair"
+                sx={{ color: 'var(--primary)' }}
+                onClick={handleNotImplemented}
+              />
             </MenuItem>
           </Menu>
         </div>

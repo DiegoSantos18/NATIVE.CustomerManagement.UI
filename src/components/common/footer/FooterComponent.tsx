@@ -1,4 +1,4 @@
-import { LinkedInIcon } from '@/components/common';
+import { LinkedInIcon } from '@/components/common/mui';
 import { LogoDarkPNG, LogoLightPNG } from '@/assets';
 import { useAppTheme } from '@/hooks';
 import './FooterComponent.scss';

@@ -5,7 +5,7 @@ import {
   EditDocumentIcon,
   NavigateNextIcon,
   Breadcrumbs,
-} from '@/components/common';
+} from '@/components/common/mui';
 import { ROUTE_CONFIG } from '@/routes/routeConfig';
 import './BreadcrumbComponent.scss';
 
