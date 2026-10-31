@@ -1,0 +1,183 @@
+.custom-data-grid {
+  width: 100%;
+  min-width: 0;
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-subtle);
+
+  .MuiDataGrid-main {
+    min-width: 0;
+    overflow: visible;
+  }
+
+  /*
+   * Container principal do scroll
+   */
+  .MuiDataGrid-virtualScroller {
+    min-width: 0;
+    position: relative;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) var(--bg-surface);
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--bg-surface);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--border-color);
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--primary);
+      }
+    }
+  }
+
+  /*
+   * Cabeçalho
+   */
+  .MuiDataGrid-columnHeaders {
+    color: var(--text-muted);
+    background-color: var(--bg-surface-hover);
+    border-bottom: 1px solid var(--border-color);
+    transform: translateZ(0);
+  }
+
+  .MuiDataGrid-columnHeaderTitle {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .MuiDataGrid-columnSeparator {
+    color: var(--border-color);
+  }
+
+  /*
+   * Linhas
+   */
+  .MuiDataGrid-row {
+    transition: background-color 0.15s ease;
+
+    &.city-row-even {
+      background-color: var(--bg-surface);
+    }
+
+    &.city-row-odd {
+      background-color: var(--bg-surface-hover);
+    }
+
+    &:hover {
+      background-color: var(--bg-surface-hover) !important;
+    }
+
+    &.Mui-selected {
+      background-color: var(--bg-surface-hover);
+    }
+  }
+
+  /*
+   * Células
+   */
+  .MuiDataGrid-cell {
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  /*
+   * Rodapé
+   */
+  .MuiDataGrid-footerContainer {
+    color: var(--text-muted);
+    background-color: var(--bg-surface-hover);
+    border-top: 1px solid var(--border-color);
+  }
+
+  /*
+   * Paginação
+   */
+  .MuiTablePagination-root {
+    color: var(--text-muted);
+  }
+
+  .MuiTablePagination-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    min-height: 52px;
+    padding: 0;
+  }
+
+  .MuiTablePagination-selectLabel,
+  .MuiTablePagination-displayedRows {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .MuiTablePagination-select {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    color: var(--text-main);
+  }
+
+  /*
+   * Ícones e botões
+   */
+  .MuiDataGrid-iconButtonContainer,
+  .MuiDataGrid-sortIcon,
+  .MuiDataGrid-menuIconButton {
+    color: var(--text-muted);
+  }
+
+  .MuiIconButton-root {
+    color: var(--text-muted);
+
+    &:hover {
+      color: var(--primary);
+      background-color: var(--accent-glow);
+    }
+
+    &.Mui-disabled {
+      color: var(--text-muted);
+      opacity: 0.45;
+    }
+  }
+
+  /*
+   * Overlay
+   */
+  .MuiDataGrid-overlay {
+    color: var(--text-muted);
+    background-color: var(--bg-surface);
+  }
+
+  /*
+   * Foco
+   */
+  .MuiDataGrid-cell:focus,
+  .MuiDataGrid-columnHeader:focus {
+    outline-color: var(--primary);
+  }
+}
+
+/*
+ * Acessibilidade: reduzir animações
+ */
+@media (prefers-reduced-motion: reduce) {
+  .custom-data-grid {
+    .MuiDataGrid-row {
+      transition: none;
+    }
+  }
+}

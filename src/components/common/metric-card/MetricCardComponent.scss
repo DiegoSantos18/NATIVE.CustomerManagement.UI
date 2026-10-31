@@ -1,0 +1,27 @@
+.metric-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  &.trend-up {
+    color: var(--snackbar-success-icon);
+
+    .trend-icon {
+      animation: pulse-up 2s infinite ease-in-out;
+    }
+  }
+
+  &.trend-down {
+    color: var(--snackbar-error-icon);
+
+    .trend-icon {
+      animation: pulse-down 2s infinite ease-in-out;
+    }
+  }
+
+  svg {
+    font-size: 1rem;
+  }
+}

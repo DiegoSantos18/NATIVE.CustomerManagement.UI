@@ -1,3 +1,7 @@
+/*
+ * Saiba mais sobre o MUI em:
+ * https://mui.com/material-ui/
+ */
 export {
   LinkedIn as LinkedInIcon,
   Dashboard as DashboardIcon,
@@ -25,4 +29,13 @@ export {
   CheckCircle as CheckCircleIcon,
   Info as InfoIcon,
   Close as CloseIcon,
+  Search as SearchIcon,
+  Visibility as VisibilityIcon,
+  ArrowForward as ArrowForwardIcon,
+  Refresh as RefreshIcon,
+  TrendingUp as TrendingUpIcon,
+  TrendingDown as TrendingDownIcon,
+  LocationCity as LocationCityIcon,
+  Map as MapIcon,
+  Tune as TuneIcon,
 } from '@mui/icons-material';
