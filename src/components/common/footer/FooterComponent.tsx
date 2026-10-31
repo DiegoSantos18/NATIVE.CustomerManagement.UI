@@ -1,14 +1,18 @@
-import { LinkedInIcon } from '@/components/common';
+import { LinkedInIcon } from '@/components/common/mui';
 import { LogoDarkPNG, LogoLightPNG } from '@/assets';
 import { useAppTheme } from '@/hooks';
 import './FooterComponent.scss';
 
-export function FooterComponent() {
+interface FooterComponentProps {
+  variant?: 'layout' | 'sidebar';
+}
+
+export function FooterComponent({ variant = 'layout' }: FooterComponentProps) {
   const currentYear = new Date().getFullYear();
   const { mode } = useAppTheme();
 
   return (
-    <footer className="app-footer">
+    <footer className={`app-footer footer-${variant}`}>
       <div className="footer-content">
         <div className="footer-copyright">© {currentYear}</div>
         <div className="footer-brands">

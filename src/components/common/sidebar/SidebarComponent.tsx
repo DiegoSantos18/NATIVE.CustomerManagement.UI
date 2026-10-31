@@ -10,8 +10,8 @@ import {
   IconButton,
   Tooltip,
   Collapse,
-  FooterComponent,
-} from '@/components/common';
+} from '@/components/common/mui';
+import { FooterComponent } from '@/components/common/footer/FooterComponent';
 import { LogoDarkPNG, LogoLightPNG } from '@/assets';
 import { useSidebarToggle, useAppTheme } from '@/hooks';
 import './SidebarComponent.scss';
@@ -26,6 +26,7 @@ export function SidebarComponent() {
 
   if (location.pathname !== prevPathname) {
     setPrevPathname(location.pathname);
+
     startTransition(() => {
       setOpenGroup(null);
     });
@@ -33,86 +34,103 @@ export function SidebarComponent() {
 
   const isCustomersActive = location.pathname.startsWith('/customers');
 
-  const handleToggleGroup = (groupName: string) => {
+  const handleToggleGroup = () => {
     if (collapsed) {
       toggle();
+      setOpenGroup('customers');
+      return;
     }
-    setOpenGroup(openGroup === groupName ? null : groupName);
+
+    setOpenGroup((current) => (current === 'customers' ? null : 'customers'));
   };
 
   const handleNavClick = () => {
     setOpenGroup(null);
+
     if (!collapsed) {
       toggle();
     }
   };
 
+  const logo = mode === 'dark' ? LogoLightPNG : LogoDarkPNG;
+
   return (
     <>
-      {!collapsed && <div className="sidebar-mobile-backdrop" onClick={toggle} />}
+      {!collapsed && (
+        <div className="sidebar-mobile-backdrop" onClick={toggle} aria-hidden="true" />
+      )}
 
       {collapsed && (
         <IconButton
           onClick={toggle}
           size="small"
           className="mobile-float-toggle"
-          aria-label="Abrir Menu"
+          aria-label="Abrir menu"
         >
-          <img src={mode === 'dark' ? LogoLightPNG : LogoDarkPNG} alt="Logo" />
+          <img src={logo} alt="" />
           <ChevronRightIcon fontSize="small" />
         </IconButton>
       )}
 
-      <aside className={`app-sidebar ${collapsed ? 'collapsed' : ''}`}>
+      <aside className={`app-sidebar ${collapsed ? 'collapsed' : ''}`} aria-label="Menu principal">
         <div className="sidebar-brand">
-          <Link to="/" className="brand-wrapper" onClick={handleNavClick}>
-            <img
-              src={mode === 'dark' ? LogoLightPNG : LogoDarkPNG}
-              alt="Logo"
-              className="brand-logo"
-            />
+          <Link
+            to="/"
+            className="brand-wrapper"
+            onClick={handleNavClick}
+            aria-label="Página inicial"
+          >
+            <img src={logo} alt="" className="brand-logo" />
+
             {!collapsed && <span className="brand-title">{import.meta.env.VITE_APP_TITLE}</span>}
           </Link>
+
+          <Tooltip title={collapsed ? 'Expandir menu' : 'Recolher menu'}>
+            <IconButton
+              onClick={toggle}
+              size="small"
+              className="edge-toggle-btn"
+              aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}
+              aria-expanded={!collapsed}
+            >
+              {collapsed ? (
+                <ChevronRightIcon fontSize="small" />
+              ) : (
+                <ChevronLeftIcon fontSize="small" />
+              )}
+            </IconButton>
+          </Tooltip>
         </div>
 
-        <Tooltip title={collapsed ? 'Expandir Menu' : 'Recolher Menu'}>
-          <IconButton
-            onClick={toggle}
-            size="small"
-            className="edge-toggle-btn"
-            aria-label="Toggle Sidebar"
-          >
-            {collapsed ? (
-              <ChevronRightIcon fontSize="small" />
-            ) : (
-              <ChevronLeftIcon fontSize="small" />
-            )}
-          </IconButton>
-        </Tooltip>
-
-        <nav className="sidebar-nav">
+        <nav className="sidebar-nav" aria-label="Navegação">
           <Tooltip title={collapsed ? 'Dashboard' : ''} placement="right" arrow>
             <Link
               to="/"
               className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}
               onClick={handleNavClick}
+              aria-current={location.pathname === '/' ? 'page' : undefined}
             >
               <DashboardIcon className="nav-icon" />
-              {!collapsed && <span>Dashboard</span>}
+
+              {!collapsed && <span className="nav-label">Dashboard</span>}
             </Link>
           </Tooltip>
 
           <div className="nav-group">
             <Tooltip title={collapsed ? 'Clientes' : ''} placement="right" arrow>
-              <div
-                className={`nav-item ${isCustomersActive ? 'active' : ''}`}
-                onClick={() => handleToggleGroup('customers')}
-                style={{ cursor: 'pointer' }}
+              <button
+                type="button"
+                className={`nav-item nav-group-trigger ${isCustomersActive ? 'active' : ''}`}
+                onClick={handleToggleGroup}
+                aria-expanded={!collapsed && openGroup === 'customers'}
+                aria-controls="customers-submenu"
               >
                 <PeopleIcon className="nav-icon" />
+
                 {!collapsed && (
                   <>
                     <span className="nav-label">Clientes</span>
+
                     <span className="arrow-icon">
                       {openGroup === 'customers' ? (
                         <ExpandLessIcon fontSize="small" />
@@ -122,16 +140,17 @@ export function SidebarComponent() {
                     </span>
                   </>
                 )}
-              </div>
+              </button>
             </Tooltip>
 
             {!collapsed && (
               <Collapse in={openGroup === 'customers'} timeout="auto" unmountOnExit>
-                <div className="submenu">
+                <div className="submenu" id="customers-submenu">
                   <Link
                     to="/customers"
                     className={`sub-nav-item ${location.pathname === '/customers' ? 'active' : ''}`}
                     onClick={handleNavClick}
+                    aria-current={location.pathname === '/customers' ? 'page' : undefined}
                   >
                     Listagem de Clientes
                   </Link>
@@ -143,7 +162,7 @@ export function SidebarComponent() {
 
         {!collapsed && (
           <div className="sidebar-mobile-footer">
-            <FooterComponent />
+            <FooterComponent variant="sidebar" />
           </div>
         )}
       </aside>

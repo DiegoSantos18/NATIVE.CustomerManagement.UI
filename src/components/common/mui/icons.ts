@@ -1,3 +1,7 @@
+/*
+ * Saiba mais sobre o MUI em:
+ * https://mui.com/material-ui/
+ */
 export {
   LinkedIn as LinkedInIcon,
   Dashboard as DashboardIcon,
@@ -20,4 +24,19 @@ export {
   Group as GroupIcon,
   EditNote as EditDocumentIcon,
   NavigateNext as NavigateNextIcon,
+  ErrorOutlined as ErrorOutlineIcon,
+  WarningAmber as WarningAmberIcon,
+  CheckCircle as CheckCircleIcon,
+  Info as InfoIcon,
+  Close as CloseIcon,
+  Search as SearchIcon,
+  Visibility as VisibilityIcon,
+  ArrowForward as ArrowForwardIcon,
+  Refresh as RefreshIcon,
+  TrendingUp as TrendingUpIcon,
+  TrendingDown as TrendingDownIcon,
+  LocationCity as LocationCityIcon,
+  Map as MapIcon,
+  Flag as FlagIcon,
+  Tune as TuneIcon,
 } from '@mui/icons-material';

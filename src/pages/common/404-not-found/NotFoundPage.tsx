@@ -6,7 +6,7 @@ import {
   Button,
   Container,
   Typography,
-} from '@/components/common';
+} from '@/components/common/mui';
 import './NotFoundPage.scss';
 
 export function NotFoundPage() {

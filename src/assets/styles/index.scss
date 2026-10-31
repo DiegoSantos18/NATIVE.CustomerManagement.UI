@@ -1,14 +1,15 @@
-@use 'variables';
+// ==========================================================================
+// ESTILOS GLOBAIS — NATIVE CUSTOMER MANAGEMENT UI
+// Ponto central de importação dos estilos da aplicação
+// ==========================================================================
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+// Design System
+@use './variables';
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--bg-primary);
-  color: var(--text-main);
-  min-height: 100vh;
-}
+// Base
+@use './base/reset';
+@use './base/typography';
+@use './base/accessibility';
+
+// Animações globais
+@use './tools/keyframes';

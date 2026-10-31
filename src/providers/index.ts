@@ -1,3 +1,2 @@
-export { AppThemeProvider } from './AppThemeProvider';
-export { ThemeContextProvider } from './ThemeContextProvider';
-export { FaviconProvider } from './FaviconThemeProvider';
+export { AppThemeProvider, FaviconProvider, ThemeContextProvider } from './theme';
+export { NotificationProvider } from './notification';

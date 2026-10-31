@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, type ReactNode } from 'react';
-import { createTheme, MuiThemeProvider } from '@/components/common';
+import { createTheme, MuiThemeProvider } from '@/components/common/mui';
 import { ThemeContextProvider } from './ThemeContextProvider';
 
 export function AppThemeProvider({ children }: { children: ReactNode }) {

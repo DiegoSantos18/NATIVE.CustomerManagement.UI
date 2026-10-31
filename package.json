@@ -1,21 +1,37 @@
 {
   "name": "native.customermanagement.ui",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,scss,css,json}\"",
     "format": "prettier --write \"src/**/*.{ts,tsx,scss,css,json}\"",
-    "preview": "vite preview"
+    "check:circular": "npx --yes madge@8.0.0 --warning --circular --extensions ts,tsx --ts-config tsconfig.app.json src",
+    "check:all": "npm run format:check && npm run lint && npm run check:circular && npm run build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiegoSantos18/NATIVE.CustomerManagement.UI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/DiegoSantos18/NATIVE.CustomerManagement.UI/issues"
+  },
+  "homepage": "https://github.com/DiegoSantos18/NATIVE.CustomerManagement.UI#readme",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.5.0",
     "@mui/material": "^9.5.0",
+    "@mui/x-data-grid": "^9.17.0",
     "axios": "^1.21.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

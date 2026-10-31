@@ -1,14 +1,16 @@
 // ==========================================================================
-// DESIGN SYSTEM - NATIVE CUSTOMER MANAGEMENT UI
-// Variáveis Globais de Cores, Temas (Dark/Light), Superfícies e Tipografia
+// DESIGN SYSTEM — NATIVE CUSTOMER MANAGEMENT UI
+// Tokens globais de cores, superfícies, tipografia e elevação
 // ==========================================================================
 
-// Cores Base
+// --------------------------------------------------------------------------
+// Identidade da marca
+// --------------------------------------------------------------------------
+
 $color-wine-dark: #881337;
 $color-blue-light: #1d4ed8;
 $color-orange-accent: #f36d20;
 
-// Tipografia e Elevações
 $font-sans:
   system-ui,
   -apple-system,
@@ -18,54 +20,196 @@ $font-sans:
   sans-serif;
 
 // ==========================================================================
-// TEMA ESCURO (DARK MODE)
+// TEMA ESCURO
 // ==========================================================================
+
 :root,
 [data-theme='dark'] {
-  --bg-primary: #020014;
-  --bg-surface: #0a004b;
-  --bg-surface-hover: #17006b;
-  --border-color: #0a004b;
-  --border-hover: rgba(29, 78, 216, 0.12);
-  --text-main: #ffffff;
-  --text-muted: #94a3b8;
-  --primary: #f36d20;
-  --accent-glow: rgba(29, 78, 216, 0.12);
-  --bg-gradient: linear-gradient(135deg, #881337 0%, #0a004b 50%, #020014 100%);
+  color-scheme: dark;
 
-  // Shadows
-  --shadow-elevation: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-modal: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-sidebar-lateral: 12px 0 40px rgba(0, 0, 0, 0.8);
-  --shadow-glow-card: 0 4px 14px var(--accent-glow);
-  --shadow-glow-card-hover: 0 6px 20px var(--accent-glow);
-  --shadow-drop-illustration: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.2));
-  --shadow-footer: 0 -4px 16px rgba(0, 0, 0, 0.4);
+  // Backgrounds e superfícies
+  --bg-primary: #08051c;
+  --bg-surface: #15103b;
+  --bg-surface-raised: #1c164b;
+  --bg-surface-hover: #251d5a;
+  --bg-overlay: rgba(5, 3, 20, 0.72);
+
+  // Gradientes
+  --bg-gradient: linear-gradient(125deg, #641039 0%, #291044 34%, #100a35 68%, #08051c 100%);
+
+  --bg-gradient-accent: linear-gradient(
+    135deg,
+    rgba(136, 19, 55, 0.42) 0%,
+    rgba(54, 24, 91, 0.24) 48%,
+    rgba(8, 5, 28, 0) 100%
+  );
+
+  // Cores de destaque
+  --primary: #f36d20;
+  --primary-hover: #ff853d;
+  --primary-active: #dc5914;
+  --primary-contrast: #ffffff;
+
+  --secondary: #818cf8;
+  --secondary-hover: #a5b4fc;
+
+  --accent-glow: rgba(243, 109, 32, 0.12);
+  --accent-glow-strong: rgba(243, 109, 32, 0.2);
+
+  // Textos
+  --text-main: #f8f7ff;
+  --text-secondary: #c4c0dc;
+  --text-muted: #a09bbd;
+  --text-disabled: #716b91;
+  --text-on-primary: #ffffff;
+
+  // Bordas
+  --border-color: rgba(151, 139, 207, 0.12);
+  --border-hover: rgba(243, 109, 32, 0.42);
+  --border-focus: #f36d20;
+
+  // Sombras e elevações
+  --shadow-elevation: 0 8px 24px rgba(0, 0, 0, 0.24), 0 2px 8px rgba(0, 0, 0, 0.16);
+
+  --shadow-subtle: 0 3px 12px rgba(0, 0, 0, 0.16);
+
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  --shadow-card-hover: 0 12px 30px rgba(0, 0, 0, 0.28), 0 0 18px rgba(243, 109, 32, 0.08);
+
+  --shadow-modal: 0 16px 48px rgba(0, 0, 0, 0.48);
+  --shadow-sidebar-lateral: 12px 0 40px rgba(0, 0, 0, 0.38);
+  --shadow-glow-card: 0 4px 18px var(--accent-glow);
+  --shadow-glow-card-hover: 0 8px 24px var(--accent-glow-strong);
+  --shadow-glow-inset: inset 0 0 0 1px rgba(243, 109, 32, 0.08);
+  --shadow-drop-illustration: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.22));
+  --shadow-footer: 0 -6px 20px rgba(0, 0, 0, 0.22);
+
+  // Tipografia
+  --font-sans: #{$font-sans};
+
+  // Snackbar — Error
+  --snackbar-error-bg: #351b29;
+  --snackbar-error-border: #854052;
+  --snackbar-error-text: #ffe4e6;
+  --snackbar-error-icon: #ff8291;
+  --snackbar-error-progress: #ff8291;
+
+  // Snackbar — Warning
+  --snackbar-warning-bg: #33280d;
+  --snackbar-warning-border: #8b681c;
+  --snackbar-warning-text: #fef3c7;
+  --snackbar-warning-icon: #facc15;
+  --snackbar-warning-progress: #facc15;
+
+  // Snackbar — Success
+  --snackbar-success-bg: #102d27;
+  --snackbar-success-border: #28765d;
+  --snackbar-success-text: #dcfce7;
+  --snackbar-success-icon: #4ade80;
+  --snackbar-success-progress: #4ade80;
+
+  // Snackbar — Info
+  --snackbar-info-bg: #12283d;
+  --snackbar-info-border: #28618c;
+  --snackbar-info-text: #dbeafe;
+  --snackbar-info-icon: #60a5fa;
+  --snackbar-info-progress: #60a5fa;
 }
 
 // ==========================================================================
-// TEMA CLARO (LIGHT MODE)
+// TEMA CLARO
 // ==========================================================================
-[data-theme='light'] {
-  --bg-primary: #f4f6f8;
-  --bg-surface: #ffffff;
-  --bg-surface-hover: #f1f5f9;
-  --border-color: #e2e8f0;
-  --border-hover: #1d4ed8;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --primary: #1d4ed8;
-  --accent-glow: rgba(29, 78, 216, 0.12);
-  --bg-gradient: linear-gradient(135deg, #1d4ed8 0%, #4f46e5 50%, #881337 100%);
 
-  // Shadows
-  --shadow-elevation: 0 4px 16px rgba(0, 0, 0, 0.1);
-  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --shadow-modal: 0 4px 12px rgba(0, 0, 0, 0.2);
-  --shadow-sidebar-lateral: 12px 0 40px rgba(0, 0, 0, 0.3);
-  --shadow-glow-card: 0 4px 14px var(--accent-glow);
-  --shadow-glow-card-hover: 0 6px 20px var(--accent-glow);
-  --shadow-drop-illustration: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.08));
-  --shadow-footer: 0 -4px 16px rgba(0, 0, 0, 0.08);
+[data-theme='light'] {
+  color-scheme: light;
+
+  // Backgrounds e superfícies
+  --bg-primary: #f1f4fa;
+  --bg-surface: #ffffff;
+  --bg-surface-raised: #ffffff;
+  --bg-surface-hover: #f3f5fc;
+  --bg-overlay: rgba(15, 23, 42, 0.36);
+
+  // Gradientes
+  --bg-gradient: linear-gradient(125deg, #dce6ff 0%, #e8e7ff 48%, #f1e4ed 100%);
+
+  --bg-gradient-accent: linear-gradient(
+    135deg,
+    rgba(29, 78, 216, 0.1) 0%,
+    rgba(79, 70, 229, 0.06) 52%,
+    rgba(136, 19, 55, 0.035) 100%
+  );
+
+  // Cores de destaque
+  --primary: #1d4ed8;
+  --primary-hover: #1e40af;
+  --primary-active: #1e3a8a;
+  --primary-contrast: #ffffff;
+
+  --secondary: #4f46e5;
+  --secondary-hover: #4338ca;
+
+  --accent-glow: rgba(29, 78, 216, 0.1);
+  --accent-glow-strong: rgba(29, 78, 216, 0.17);
+
+  // Textos
+  --text-main: #17213b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-disabled: #94a3b8;
+  --text-on-primary: #ffffff;
+
+  // Bordas
+  --border-color: rgba(100, 116, 139, 0.16);
+  --border-hover: rgba(29, 78, 216, 0.38);
+  --border-focus: #1d4ed8;
+
+  // Sombras e elevações
+  --shadow-elevation: 0 8px 24px rgba(30, 41, 59, 0.07), 0 2px 8px rgba(30, 41, 59, 0.04);
+
+  --shadow-subtle: 0 3px 12px rgba(30, 41, 59, 0.05);
+
+  --shadow-card: 0 8px 24px rgba(30, 41, 59, 0.07), 0 2px 8px rgba(30, 41, 59, 0.035);
+
+  --shadow-card-hover: 0 12px 30px rgba(30, 41, 59, 0.1), 0 0 18px rgba(29, 78, 216, 0.06);
+
+  --shadow-modal: 0 16px 48px rgba(30, 41, 59, 0.18);
+  --shadow-sidebar-lateral: 12px 0 40px rgba(30, 41, 59, 0.12);
+  --shadow-glow-card: 0 4px 18px var(--accent-glow);
+  --shadow-glow-card-hover: 0 8px 24px var(--accent-glow-strong);
+  --shadow-glow-inset: inset 0 0 0 1px rgba(29, 78, 216, 0.06);
+  --shadow-drop-illustration: drop-shadow(0 10px 24px rgba(30, 41, 59, 0.08));
+  --shadow-footer: 0 -6px 20px rgba(30, 41, 59, 0.06);
+
+  // Tipografia
+  --font-sans: #{$font-sans};
+
+  // Snackbar — Error
+  --snackbar-error-bg: #fff1f2;
+  --snackbar-error-border: #fecdd3;
+  --snackbar-error-text: #881337;
+  --snackbar-error-icon: #e11d48;
+  --snackbar-error-progress: #e11d48;
+
+  // Snackbar — Warning
+  --snackbar-warning-bg: #fffbeb;
+  --snackbar-warning-border: #fde68a;
+  --snackbar-warning-text: #78350f;
+  --snackbar-warning-icon: #d97706;
+  --snackbar-warning-progress: #d97706;
+
+  // Snackbar — Success
+  --snackbar-success-bg: #f0fdf4;
+  --snackbar-success-border: #bbf7d0;
+  --snackbar-success-text: #14532d;
+  --snackbar-success-icon: #16a34a;
+  --snackbar-success-progress: #16a34a;
+
+  // Snackbar — Info
+  --snackbar-info-bg: #eff6ff;
+  --snackbar-info-border: #bfdbfe;
+  --snackbar-info-text: #1e3a8a;
+  --snackbar-info-icon: #2563eb;
+  --snackbar-info-progress: #2563eb;
 }
