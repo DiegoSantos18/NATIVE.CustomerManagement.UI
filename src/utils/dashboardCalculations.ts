@@ -18,7 +18,7 @@ export function calculateDashboardMetrics(cities: CityCustomerCount[]) {
   const totalCustomers = cities.reduce((total, item) => total + item.customersTotal, 0);
   const totalCities = cities.length;
 
-  // Mapeamento dos estados únicos extraídos via tratamento da string "Cidade, UF"
+  // Mapeamento das UF's únicas extraídos via tratamento da string "Cidade, UF"
   const uniqueStatesMap = new Map<string, number>();
   cities.forEach((item) => {
     const { state } = getCityAndState(item.city);
@@ -29,14 +29,14 @@ export function calculateDashboardMetrics(cities: CityCustomerCount[]) {
 
   const totalStates = uniqueStatesMap.size;
 
-  // 1. Média do Card 1: Alcance global combinando entidades geográficas (Cidades + Estados)
+  // 1. Média do Card 1: Alcance global combinando entidades geográficas (Cidades + UF's)
   const totalRegions = totalCities + totalStates;
   const avgGeneralReach = totalRegions > 0 ? totalCustomers / totalRegions : 0;
 
   // 2. Média do Card 2: Clientes por Cidade (Total de Clientes / Total de Cidades)
   const avgCustomersPerCity = totalCities > 0 ? totalCustomers / totalCities : 0;
 
-  // 3. Média do Card 3: Clientes por Estado (Total de Clientes / Total de Estados)
+  // 3. Média do Card 3: Clientes por UF (Total de Clientes / Total de UF's)
   const avgCustomersPerState = totalStates > 0 ? totalCustomers / totalStates : 0;
 
   // Tipagem estrita 'up' | 'down' para as tendências de negócio

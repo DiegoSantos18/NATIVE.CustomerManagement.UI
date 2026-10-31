@@ -6,7 +6,7 @@ import {
   ArrowForwardIcon,
   RefreshIcon,
   LocationCityIcon,
-  MapIcon,
+  FlagIcon,
   Box,
   Typography,
   Button,
@@ -109,8 +109,8 @@ export function DashboardPage() {
     {
       field: 'city',
       headerName: 'Cidade',
-      width: 200,
-      minWidth: 180,
+      width: 180,
+      minWidth: 80,
       renderCell: (params) => {
         const { city } = getCityAndState(params.row.city);
 
@@ -127,9 +127,9 @@ export function DashboardPage() {
     },
     {
       field: 'state',
-      headerName: 'Estado',
-      width: 90,
-      minWidth: 90,
+      headerName: 'UF',
+      width: 50,
+      minWidth: 50,
       sortable: false,
       valueGetter: (_value, row) => getCityAndState(row.city).state || '—',
     },
@@ -137,7 +137,8 @@ export function DashboardPage() {
       field: 'customersTotal',
       headerName: 'Total de Clientes',
       flex: 1,
-      minWidth: 240,
+      width: 240,
+      minWidth: 80,
       sortable: true,
       renderCell: ({ row }) => (
         <ProgressBarComponent
@@ -238,17 +239,17 @@ export function DashboardPage() {
 
         <MetricCardComponent
           key={`metric-state-${progressAnimationKey}`}
-          label="Estados atendidos"
+          label="UF's atendidas"
           value={metrics.totalStates}
           loading={loading}
           footerContent={
             <>
               Média de <CountUpComponent value={Number(metrics.avgCustomersPerState.toFixed(1))} />{' '}
-              clientes por estado
+              clientes por UF
             </>
           }
           trend={metrics.stateTrend}
-          illustrationIcon={<MapIcon className="metric-illustration metric-location-icon" />}
+          illustrationIcon={<FlagIcon className="metric-illustration metric-location-icon" />}
         />
       </div>
 
@@ -256,7 +257,7 @@ export function DashboardPage() {
         title="Clientes por cidade"
         subtitle="Distribuição de clientes nas cidades."
         icon={<PeopleIcon />}
-        searchPlaceholder="Buscar cidade ou estado..."
+        searchPlaceholder="Buscar cidade ou UF..."
         searchValue={search}
         onSearchChange={(event) => setSearch(event.target.value)}
         footerInfo="Clique na seta de uma cidade para 'Visualizar' a lista de clientes."

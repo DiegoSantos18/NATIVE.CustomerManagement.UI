@@ -37,5 +37,6 @@ export {
   TrendingDown as TrendingDownIcon,
   LocationCity as LocationCityIcon,
   Map as MapIcon,
+  Flag as FlagIcon,
   Tune as TuneIcon,
 } from '@mui/icons-material';
