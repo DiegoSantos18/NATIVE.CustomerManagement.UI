@@ -42,8 +42,8 @@
     display: flex;
     align-items: center;
     min-height: 52px;
-    padding-left: 4.5rem;
     padding-right: 1.5rem;
+    padding-left: 4.5rem;
   }
 
   .app-snackbar-message {
@@ -90,9 +90,7 @@
     width: 100%;
     height: 4px;
     transform-origin: left;
-    animation-name: snackbar-progress;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
+    animation: snackbar-progress linear forwards;
   }
 
   &--error {
@@ -163,23 +161,13 @@
 @media (max-width: 480px) {
   .app-snackbar {
     .app-snackbar-content {
-      padding-left: 4rem;
       padding-right: 1.25rem;
+      padding-left: 4rem;
     }
 
     .app-snackbar-watermark svg {
       width: 88px;
       height: 88px;
     }
-  }
-}
-
-@keyframes snackbar-progress {
-  from {
-    transform: scaleX(1);
-  }
-
-  to {
-    transform: scaleX(0);
   }
 }

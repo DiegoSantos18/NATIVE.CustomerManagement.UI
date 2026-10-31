@@ -1,22 +1,22 @@
 .app-footer {
-  height: 48px;
-  background-color: var(--bg-gradient);
-  border-top: 1px solid var(--border-color);
-  box-shadow: var(--shadow-footer);
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 48px;
   padding: 0 1.5rem;
-  margin-top: auto;
-  z-index: 10;
+  color: var(--text-main);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  box-shadow: var(--shadow-footer);
 
   .footer-content {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    font-size: 0.85rem;
     color: var(--text-muted);
+    font-size: 0.85rem;
 
     .footer-copyright {
       color: var(--text-muted);
@@ -33,15 +33,21 @@
     }
 
     .footer-link {
-      color: var(--text-main);
-      text-decoration: none;
-      transition: color 0.2s ease;
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
+      color: var(--text-main);
+      text-decoration: none;
+      transition: color 0.2s ease;
 
       &:hover {
         color: var(--primary);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 3px;
+        border-radius: 3px;
       }
     }
 
@@ -57,9 +63,26 @@
     }
   }
 
-  @media (max-width: 768px) {
+  &.footer-layout {
+    position: fixed;
+    bottom: 0;
+    left: var(--sidebar-width, 260px);
+    z-index: 1150;
+    width: calc(100% - var(--sidebar-width, 260px));
+    transition:
+      left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.footer-sidebar {
+    position: static;
+    width: 100%;
     height: auto;
+    min-height: 48px;
     padding: 0.75rem 1rem;
+    background: transparent;
+    border-top: none;
+    box-shadow: none;
 
     .footer-content {
       flex-direction: column;
@@ -72,5 +95,34 @@
         flex-wrap: wrap;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .app-footer.footer-layout {
+    left: 0;
+    width: 100%;
+    height: auto;
+    min-height: 48px;
+    padding: 0.65rem 1rem;
+
+    .footer-content {
+      flex-direction: column;
+      gap: 0.25rem;
+      text-align: center;
+      font-size: 0.775rem;
+
+      .footer-brands {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-footer,
+  .app-footer * {
+    transition: none !important;
   }
 }

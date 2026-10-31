@@ -33,13 +33,44 @@ export function HeaderComponent() {
   };
 
   // TODO: Implementar funcionalidades futuras
-  const handleNotImplemented = () => {
+  const handleNotImplemented = (name: string) => {
     handleCloseMenu();
 
     showNotification({
       severity: 'info',
-      message: 'Funcionalidade não implementada.',
+      message: `Funcionalidade '${name}' não implementada.`,
     });
+  };
+
+  const menuItemStyles = {
+    minHeight: 44,
+    px: 2,
+    color: 'var(--text-secondary)',
+    transition: 'background-color 0.2s ease, color 0.2s ease',
+
+    '&:hover': {
+      color: 'var(--primary)',
+      backgroundColor: 'var(--bg-surface-hover)',
+    },
+
+    '&.Mui-focusVisible': {
+      backgroundColor: 'var(--bg-surface-hover)',
+    },
+
+    '& .MuiListItemIcon-root': {
+      minWidth: 36,
+      color: 'var(--text-muted)',
+      transition: 'color 0.2s ease',
+    },
+
+    '&:hover .MuiListItemIcon-root': {
+      color: 'var(--primary)',
+    },
+
+    '& .MuiListItemText-primary': {
+      fontSize: '0.875rem',
+      fontWeight: 500,
+    },
   };
 
   return (
@@ -73,13 +104,13 @@ export function HeaderComponent() {
                   width: 36,
                   height: 36,
                   bgcolor: 'var(--primary)',
-                  color: 'var(--bg-primary)',
+                  color: 'var(--primary-contrast)',
                   fontWeight: 700,
                   fontSize: '0.875rem',
                   boxShadow: 'var(--shadow-elevation)',
                 }}
               >
-                DS
+                <PersonIcon fontSize="small" />
               </Avatar>
             </IconButton>
           </Tooltip>
@@ -92,35 +123,67 @@ export function HeaderComponent() {
             slotProps={{
               paper: {
                 sx: {
-                  backgroundColor: 'var(--bg-primary)',
-                  backgroundImage: 'none',
-                  color: 'var(--text-main)',
-                  border: '1px solid var(--border-color)',
-                  boxShadow: 'var(--shadow-elevation)',
                   mt: 1,
-                  minWidth: 180,
+                  minWidth: 190,
+                  overflow: 'hidden',
+                  color: 'var(--text-main)',
+                  backgroundColor: 'var(--bg-surface-raised)',
+                  backgroundImage: 'none',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  boxShadow: 'var(--shadow-modal)',
+                  transition: 'background-color 0.25s ease, border-color 0.25s ease',
+
+                  '& .MuiList-root': {
+                    padding: '0.4rem',
+                  },
                 },
               },
             }}
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            <MenuItem onClick={handleNotImplemented}>
+            <MenuItem onClick={() => handleNotImplemented('Meu Perfil')} sx={menuItemStyles}>
               <ListItemIcon>
-                <PersonIcon fontSize="small" sx={{ color: 'var(--text-muted)' }} />
+                <PersonIcon fontSize="small" />
               </ListItemIcon>
 
               <ListItemText primary="Meu Perfil" />
             </MenuItem>
 
-            <Divider sx={{ borderColor: 'var(--border-color)' }} />
+            <Divider
+              sx={{
+                my: 0.5,
+                borderColor: 'var(--border-color)',
+              }}
+            />
 
-            <MenuItem onClick={handleNotImplemented}>
+            <MenuItem
+              onClick={() => handleNotImplemented('Sair')}
+              sx={{
+                ...menuItemStyles,
+                color: 'var(--primary)',
+
+                '& .MuiListItemIcon-root': {
+                  minWidth: 36,
+                  color: 'var(--primary)',
+                },
+
+                '&:hover': {
+                  color: 'var(--primary-hover)',
+                  backgroundColor: 'var(--bg-surface-hover)',
+                },
+
+                '&:hover .MuiListItemIcon-root': {
+                  color: 'var(--primary-hover)',
+                },
+              }}
+            >
               <ListItemIcon>
-                <LogoutIcon fontSize="small" sx={{ color: 'var(--primary)' }} />
+                <LogoutIcon fontSize="small" />
               </ListItemIcon>
 
-              <ListItemText primary="Sair" sx={{ color: 'var(--primary)' }} />
+              <ListItemText primary="Sair" />
             </MenuItem>
           </Menu>
         </div>

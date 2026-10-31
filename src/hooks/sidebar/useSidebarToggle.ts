@@ -5,7 +5,7 @@ const SIDEBAR_STORAGE_KEY = 'native_sidebar_collapsed';
 export function useSidebarToggle() {
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     const saved = localStorage.getItem(SIDEBAR_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : false;
+    return saved ? JSON.parse(saved) : true;
   });
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import {
   BreadcrumbComponent,
@@ -6,22 +6,28 @@ import {
   HeaderComponent,
   FooterComponent,
 } from '@/components/common';
+import { useSidebarToggle } from '@/hooks';
 import './MainLayout.scss';
 
 export function MainLayout() {
   const location = useLocation();
+  const { collapsed } = useSidebarToggle();
+
   const [isPending, startTransition] = useTransition();
   const [displayLocation, setDisplayLocation] = useState(location);
 
-  if (location !== displayLocation && !isPending) {
-    startTransition(() => {
-      setDisplayLocation(location);
-    });
-  }
+  useEffect(() => {
+    if (location !== displayLocation) {
+      startTransition(() => {
+        setDisplayLocation(location);
+      });
+    }
+  }, [location, displayLocation, startTransition]);
 
   return (
-    <div className="main-layout">
+    <div className={`main-layout ${collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'}`}>
       <SidebarComponent />
+
       <div className="layout-content">
         <HeaderComponent />
 
@@ -33,7 +39,7 @@ export function MainLayout() {
           <Outlet />
         </main>
 
-        <FooterComponent />
+        <FooterComponent variant="layout" />
       </div>
     </div>
   );

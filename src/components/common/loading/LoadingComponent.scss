@@ -115,43 +115,6 @@
   text-align: center;
 }
 
-@keyframes loading-spin-clockwise {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes loading-spin-counterclockwise {
-  to {
-    transform: rotate(-360deg);
-  }
-}
-
-@keyframes logo-breathe {
-  0%,
-  100% {
-    transform: scale(0.98);
-    opacity: 0.92;
-  }
-  50% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes tagline-fill {
-  0%,
-  10% {
-    clip-path: inset(0 100% 0 0);
-  }
-  70%,
-  90% {
-    clip-path: inset(0 0 0 0);
-  }
-  100% {
-    clip-path: inset(0 0 0 100%);
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .loading-indicator-ring,
@@ -159,6 +122,7 @@
   .loading-tagline-progress {
     animation: none;
   }
+
   .loading-tagline-progress {
     clip-path: inset(0);
   }
