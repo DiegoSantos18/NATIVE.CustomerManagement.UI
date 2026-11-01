@@ -5,6 +5,7 @@ import {
   SidebarComponent,
   HeaderComponent,
   FooterComponent,
+  ScrollToTopButton,
 } from '@/components/common';
 import { useSidebarToggle } from '@/hooks';
 import './MainLayout.scss';
@@ -40,6 +41,8 @@ export function MainLayout() {
         </main>
 
         <FooterComponent variant="layout" />
+
+        <ScrollToTopButton />
       </div>
     </div>
   );

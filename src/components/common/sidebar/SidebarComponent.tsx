@@ -1,4 +1,4 @@
-import { useState, useTransition } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   DashboardIcon,
@@ -22,15 +22,12 @@ export function SidebarComponent() {
   const location = useLocation();
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [, startTransition] = useTransition();
-  const [prevPathname, setPrevPathname] = useState(location.pathname);
 
-  if (location.pathname !== prevPathname) {
-    setPrevPathname(location.pathname);
-
+  useEffect(() => {
     startTransition(() => {
       setOpenGroup(null);
     });
-  }
+  }, [location.pathname]);
 
   const isCustomersActive = location.pathname.startsWith('/customers');
 

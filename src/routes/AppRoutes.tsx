@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { MainLayout } from '@/components/layout';
 import { LoadingComponent } from '@/components/common/loading/LoadingComponent';
+import { ScrollToTopButton } from '@/components/common/scroll-to-top-button/ScrollToTopButton';
 import type { ComponentType } from 'react';
 
 const loadWithDelay = <T extends ComponentType<unknown>>(
@@ -30,6 +31,7 @@ const NotFoundPage = lazy(
 export function AppRoutes() {
   return (
     <Suspense fallback={<LoadingComponent text="Carregando..." fullScreen />}>
+      <ScrollToTopButton />
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<DashboardPage />} />

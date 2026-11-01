@@ -10,3 +10,5 @@ export type { SnackbarSeverity } from './snackbar/SnackbarComponent';
 export { MetricCardComponent } from './metric-card/MetricCardComponent';
 export { CustomDataGridComponent } from './custom-data-grid/CustomDataGridComponent';
 export { CustomCardComponent } from './custom-card/CustomCardComponent';
+export { CustomMultiSelectFilterComponent } from './custom-multi-select-filter/CustomMultiSelectFilterComponent';
+export { ScrollToTopButton } from './scroll-to-top-button/ScrollToTopButton';
