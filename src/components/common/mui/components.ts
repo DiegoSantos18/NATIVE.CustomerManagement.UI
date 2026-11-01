@@ -25,6 +25,9 @@ export {
   InputAdornment,
   TextField,
   CircularProgress,
+  Checkbox,
+  Popover,
+  FormControlLabel,
 } from '@mui/material';
 export { ptBR } from '@mui/x-data-grid/locales';
 export { DataGrid, type DataGridProps, type GridColDef } from '@mui/x-data-grid';

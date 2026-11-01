@@ -22,6 +22,8 @@ export {
   Badge as BadgeIcon,
   Home as HomeIcon,
   Group as GroupIcon,
+  Edit as EditIcon,
+  EditNote as EditNoteIcon,
   EditNote as EditDocumentIcon,
   NavigateNext as NavigateNextIcon,
   ErrorOutlined as ErrorOutlineIcon,
@@ -39,4 +41,7 @@ export {
   Map as MapIcon,
   Flag as FlagIcon,
   Tune as TuneIcon,
+  FilterList as FilterListIcon,
+  Create as CreateIcon,
+  KeyboardArrowUp as KeyboardArrowUpIcon,
 } from '@mui/icons-material';

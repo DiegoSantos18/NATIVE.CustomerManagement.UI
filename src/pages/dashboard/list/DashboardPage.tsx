@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { customerService, type CityCustomerCount } from '@/api/customers';
 import {
   DashboardIcon,
   PeopleIcon,
+  PersonPinCircleIcon,
   ArrowForwardIcon,
   RefreshIcon,
   LocationCityIcon,
@@ -11,6 +13,7 @@ import {
   Typography,
   Button,
   IconButton,
+  Tooltip,
   CircularProgress,
   TuneIcon,
   type GridColDef,
@@ -21,45 +24,56 @@ import {
   ProgressBarComponent,
   CustomCardComponent,
   CustomDataGridComponent,
+  CustomMultiSelectFilterComponent,
 } from '@/components/common';
-import { useNotification } from '@/hooks';
+import { useNotification, useFilterStorage } from '@/hooks';
 import { getCityAndState, calculateDashboardMetrics } from '@/utils';
 import './DashboardPage.scss';
 
+const FAIL_LOAD_DASHBOARD_MESSAGE =
+  'Não foi possível carregar os dados do dashboard. Tente novamente dentro de alguns minutos!';
+const DASHBOARD_CITY_FILTER_KEY = 'native_dashboard_city_filter';
+
 export function DashboardPage() {
+  const navigate = useNavigate();
   const { showNotification } = useNotification();
 
   const [cities, setCities] = useState<CityCustomerCount[]>([]);
   const [loading, setLoading] = useState(true);
   const [progressAnimationKey, setProgressAnimationKey] = useState(0);
-  const [search, setSearch] = useState('');
-  const failLoadDashboardMsg =
-    'Não foi possível carregar os dados do dashboard. Tente novamente dentro de alguns minutos!';
+  const [selectedCities, setSelectedCities] = useFilterStorage<string[]>(
+    DASHBOARD_CITY_FILTER_KEY,
+    []
+  );
 
-  const loadDashboard = useCallback(async () => {
+  const fetchDashboard = useCallback(() => {
+    return customerService.getTotalByCity();
+  }, []);
+
+  const loadDashboard = async () => {
     setLoading(true);
 
     try {
-      const result = await customerService.getTotalByCity();
+      const result = await fetchDashboard();
 
       setCities(result);
       setProgressAnimationKey((previousKey) => previousKey + 1);
     } catch {
       showNotification({
         severity: 'error',
-        message: failLoadDashboardMsg,
+        message: FAIL_LOAD_DASHBOARD_MESSAGE,
       });
     } finally {
       setLoading(false);
     }
-  }, [showNotification]);
+  };
 
   useEffect(() => {
     let isActive = true;
 
     async function initializeDashboard() {
       try {
-        const result = await customerService.getTotalByCity();
+        const result = await fetchDashboard();
 
         if (isActive) {
           setCities(result);
@@ -68,7 +82,7 @@ export function DashboardPage() {
         if (isActive) {
           showNotification({
             severity: 'error',
-            message: failLoadDashboardMsg,
+            message: FAIL_LOAD_DASHBOARD_MESSAGE,
           });
         }
       } finally {
@@ -83,27 +97,17 @@ export function DashboardPage() {
     return () => {
       isActive = false;
     };
-  }, [showNotification]);
+  }, [fetchDashboard, showNotification]);
 
   const metrics = useMemo(() => calculateDashboardMetrics(cities), [cities]);
 
   const filteredCities = useMemo(() => {
-    const normalizedSearch = search.trim().toLocaleLowerCase('pt-BR');
-
-    if (!normalizedSearch) {
+    if (selectedCities.length === 0 || selectedCities.length === cities.length) {
       return cities;
     }
 
-    return cities.filter((item) => {
-      const { city, state } = getCityAndState(item.city);
-
-      return (
-        city.toLocaleLowerCase('pt-BR').includes(normalizedSearch) ||
-        state.toLocaleLowerCase('pt-BR').includes(normalizedSearch) ||
-        item.city.toLocaleLowerCase('pt-BR').includes(normalizedSearch)
-      );
-    });
-  }, [cities, search]);
+    return cities.filter((item) => selectedCities.includes(item.city));
+  }, [cities, selectedCities]);
 
   const columns: GridColDef<CityCustomerCount>[] = [
     {
@@ -117,7 +121,7 @@ export function DashboardPage() {
         return (
           <div className="city-cell">
             <span className="city-cell-icon">
-              <PeopleIcon />
+              <PersonPinCircleIcon />
             </span>
 
             <span className="city-cell-name">{city}</span>
@@ -160,18 +164,15 @@ export function DashboardPage() {
       align: 'center',
       headerAlign: 'center',
       renderCell: (params) => (
-        <IconButton
-          className="view-city-button"
-          aria-label={`Visualizar clientes de ${params.row.city}`}
-          onClick={() =>
-            showNotification({
-              severity: 'info',
-              message: `Funcionalidade 'listagem de clientes de ${params.row.city}' não implementada.`,
-            })
-          }
-        >
-          <ArrowForwardIcon />
-        </IconButton>
+        <Tooltip title={`Visualizar ${params.row.city}`} placement="top" arrow>
+          <IconButton
+            className="view-city-button"
+            aria-label={`Visualizar clientes de ${params.row.city}`}
+            onClick={() => navigate(`/customers?city=${encodeURIComponent(params.row.city)}`)}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        </Tooltip>
       ),
     },
   ];
@@ -257,10 +258,15 @@ export function DashboardPage() {
         title="Clientes por cidade"
         subtitle="Distribuição de clientes nas cidades."
         icon={<PeopleIcon />}
-        searchPlaceholder="Buscar cidade ou UF..."
-        searchValue={search}
-        onSearchChange={(event) => setSearch(event.target.value)}
-        footerInfo="Clique na seta de uma cidade para 'Visualizar' a lista de clientes."
+        headerAction={
+          <CustomMultiSelectFilterComponent
+            options={cities.map((item) => item.city)}
+            value={selectedCities}
+            onApply={setSelectedCities}
+            onClear={() => setSelectedCities([])}
+          />
+        }
+        footerInfo="Utilize os filtros acima ou acesse diretamente os detalhes de cada localidade."
       >
         <CustomDataGridComponent
           rows={filteredCities}
