@@ -41,14 +41,16 @@
     }
   }
 
-  /*
-   * Cabeçalho
-   */
+  /* Cabeçalho */
   .MuiDataGrid-columnHeaders {
     color: var(--text-muted);
     background-color: var(--bg-surface-hover);
     border-bottom: 1px solid var(--border-color);
     transform: translateZ(0);
+  }
+
+  .MuiDataGrid-columnHeader {
+    background-color: var(--bg-surface-hover);
   }
 
   .MuiDataGrid-columnHeaderTitle {
@@ -62,49 +64,86 @@
     color: var(--border-color);
   }
 
-  /*
-   * Linhas
-   */
+  /* Linhas e cores alternadas */
   .MuiDataGrid-row {
+    color: var(--text-main);
     transition: background-color 0.15s ease;
 
     &.city-row-even {
       background-color: var(--bg-surface);
+
+      .MuiDataGrid-cell--pinned {
+        background-color: var(--bg-surface) !important;
+      }
     }
 
     &.city-row-odd {
       background-color: var(--bg-surface-hover);
+
+      .MuiDataGrid-cell--pinned {
+        background-color: var(--bg-surface-hover) !important;
+      }
     }
 
     &:hover {
-      background-color: var(--bg-surface-hover) !important;
+      background-color: var(--grid-row-hover) !important;
+
+      .MuiDataGrid-cell--pinned {
+        background-color: var(--bg-surface-hover) !important;
+      }
     }
 
     &.Mui-selected {
-      background-color: var(--bg-surface-hover);
+      background-color: var(--grid-row-selected) !important;
+
+      .MuiDataGrid-cell--pinned {
+        background-color: var(--bg-surface-raised) !important;
+      }
+    }
+
+    &.Mui-selected:hover {
+      background-color: var(--grid-row-selected-hover) !important;
+
+      .MuiDataGrid-cell--pinned {
+        background-color: var(--bg-surface-raised) !important;
+      }
     }
   }
 
-  /*
-   * Células
-   */
+  /* Células padrão */
   .MuiDataGrid-cell {
     color: var(--text-main);
+    background-color: transparent !important;
     border-bottom: 1px solid var(--border-color);
+
+    &.MuiDataGrid-cell--pinned {
+      border-bottom: 1px solid var(--border-color);
+    }
   }
 
-  /*
-   * Rodapé
-   */
+  /* Checkbox */
+  .MuiDataGrid-cellCheckbox,
+  .MuiDataGrid-columnHeaderCheckbox {
+    color: var(--text-main);
+
+    .MuiCheckbox-root {
+      color: var(--text-muted);
+
+      &.Mui-checked,
+      &.MuiCheckbox-indeterminate {
+        color: var(--grid-selection-control);
+      }
+    }
+  }
+
+  /* Rodapé */
   .MuiDataGrid-footerContainer {
     color: var(--text-muted);
     background-color: var(--bg-surface-hover);
     border-top: 1px solid var(--border-color);
   }
 
-  /*
-   * Paginação
-   */
+  /* Paginação */
   .MuiTablePagination-root {
     color: var(--text-muted);
   }
@@ -131,9 +170,7 @@
     color: var(--text-main);
   }
 
-  /*
-   * Ícones e botões
-   */
+  /* Ícones e botões */
   .MuiDataGrid-iconButtonContainer,
   .MuiDataGrid-sortIcon,
   .MuiDataGrid-menuIconButton {
@@ -154,26 +191,19 @@
     }
   }
 
-  /*
-   * Overlay
-   */
+  /* Overlay de carregamento e ausência de resultados */
   .MuiDataGrid-overlay {
     color: var(--text-muted);
     background-color: var(--bg-surface);
   }
 
-  /*
-   * Foco
-   */
+  /* Foco */
   .MuiDataGrid-cell:focus,
   .MuiDataGrid-columnHeader:focus {
     outline-color: var(--primary);
   }
 }
 
-/*
- * Acessibilidade: reduzir animações
- */
 @media (prefers-reduced-motion: reduce) {
   .custom-data-grid {
     .MuiDataGrid-row {
