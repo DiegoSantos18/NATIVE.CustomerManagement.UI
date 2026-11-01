@@ -2,180 +2,139 @@
 
 Interface Web Front-end desenvolvida em React 19 com TypeScript, Vite e SCSS, estruturada sob os princípios de **Clean Architecture**, **Componentização Reutilizável** e **Design System Customizado** para a gestão de clientes e atendimento da Native IP.
 
+---
+
 ## 🛠️ Stack Tecnológica
 
-- **Core:** React 19 + TypeScript
-
-- **Build Tool / Bundler:** Vite (Porta `4200`)
-
-- **UI Framework / Design System:** Material Design (MUI v6) com centralização de componentes e ícones em `src/components/common/mui`
-
-- **Estilização & Temas:** SCSS (Sass) centralizado em `src/assets/styles/_variables.scss` (suporte nativo a Dark/Light mode via atributos `[data-theme]`) + Emotion
-
+- **Core / Runtime:** Node.js v26.5.0 (gerenciado via `.nvmrc`)
+- **Linguagem:** TypeScript
+- **Framework / Build Tool:** React 19 + Vite (Porta `4200`)
+- **UI Framework / Design System:** Material Design (MUI v6) com centralização em `src/components/common/mui`
+- **Estilização & Temas:** SCSS centralizado em `src/assets/styles/_variables.scss` (suporte a Dark/Light mode via atributos `[data-theme]`) + Emotion
 - **Roteamento:** React Router DOM (v7) com Code Splitting (`React.lazy` + `Suspense`)
-
 - **Comunicação Real-time:** Socket.io-client
-
-- **Testes Unitários:** Vitest
-
-- **Qualidade de Código & Linting:** ESLint v9 + Prettier
-
-- **Runtime & Package Manager:** Node.js v26.5.0 via `npm`
-
-## 🏗️ Arquitetura do Front-end
-
-A aplicação adota uma Clean Architecture no Front-end, separando responsabilidades em camadas bem definidas e desacoplando os componentes visuais dos serviços de infraestrutura e estado:
-
-```mermaid
-graph TD
-    User[Usuário / Navegador<br>Porta 4200] --> Presentation[Presentation Layer<br>Pages, Components, SCSS Styles]
-    Presentation --> Routes[Routes Layer<br>React Router, Code Splitting & Suspense]
-    Routes --> Application[Application / State Layer<br>Custom Hooks, React Query & Transitions]
-    Application --> Infrastructure[Infrastructure Layer<br>Axios HTTP API Client & Socket.io Client]
-    Infrastructure --> API[Back-end REST API & WebSocket<br>Porta 3000]
-
-```
-
-### 🎨 Design System & UX Engine
-
-- **Suporte Semântico de Temas:** Alternância dinâmica entre Light/Dark Mode gerida por atributos `[data-theme]` no documento HTML e sincronização do Favicon.
-
-- **Transições Fluídas de Rota:** Gerenciamento concorrente com `useTransition` do React no `MainLayout` para evitar renderizações síncronas em cascata e proporcionar transições de tela (_fade / slide_) suaves.
-
-- **Menu Lateral Inteligente (Sidebar):** Recolhimento e colapso automático de submenus/grupos ativos ao alternar de rota ou expandir novas seções.
+- **Testes & Qualidade:** Vitest + ESLint v9 + Prettier + Madge (verificação de dependências circulares)
 
 ---
 
-## 🌳 Estrutura de Pastas
+## 🧭 Visão Geral da Arquitetura
 
-<details>
-<summary><b>📂 NATIVE.CustomerManagement.UI/</b></summary>
+Este diagrama resume o fluxo principal da UI e conecta a documentação detalhada das camadas e componentes.
 
-- 📁 **.github/** — Workflows de CI/CD (GitHub Actions)
-- 📁 **.vscode/** — Configurações e extensões recomendadas
-- 📁 **public/** — Ativos estáticos públicos (Favicon, SVG icons)
-- 📁 **src/**
-  - 📁 **api/** — Clientes de API REST (Axios) e instâncias de Socket.io
-  - 📁 **assets/** — Recursos estáticos da aplicação
-    - 📁 **illustrations/** — Ilustrações vetoriais (ex: página 404)
-    - 📁 **images/** — Logos e favicons nos formatos dark/light (`logo-dark.png`, `logo-light.png`)
-    - 📁 **styles/** — Estilos globais, mixins e o Design System (`_variables.scss` com variáveis semânticas de cores, gradientes e sombras)
-  - 📁 **components/** — Componentes reutilizáveis de UI
-    - 📁 **common/** — Componentes compartilhados (`BreadcrumbComponent`, `FooterComponent`, `HeaderComponent`, `SidebarComponent`, `LoadingComponent`)
-      - 📁 **mui/** — Centralização de componentes e ícones do Material UI (`components.ts`, `icons.ts`)
-    - 📁 **layout/** — Estrutura de layout principal da aplicação (`MainLayout`)
-  - 📁 **hooks/** — Custom Hooks do React (`useAppTheme`, `useSidebarToggle`, `useFaviconTheme`)
-  - 📁 **pages/** — Views/Páginas principais da aplicação (`Dashboard`, `Customers`, `CustomerDetails`, `NotFound`)
-  - 📁 **providers/** — Provedores de contexto globais (`AppThemeProvider`, `FaviconThemeProvider`, `ThemeContextProvider`)
-  - 📁 **routes/** — Configuração e proteção de rotas da aplicação (`AppRoutes`, `routeConfig.ts`, `loadWithDelay.ts`)
-  - 📁 **types/** — Tipagens globais e contratos do domínio (`customer.ts`, `theme.ts`, `navigation.ts`)
-  - 📁 **utils/** — Funções utilitárias e formatadores
-  - 📁 **validators/** — Schemas de validação de formulários (Zod)
-  - 📄 `App.tsx` — Componente Raiz da Aplicação
-  - 📄 `main.tsx` — Ponto de entrada e renderização do React DOM
-  - 📄 `vite-env.d.ts` — Tipagens do ambiente Vite
-- 📄 `.editorconfig` — Padronização de formatação do editor
-- 📄 `.env.example` — Modelo de variáveis de ambiente
-- 📄 `.gitignore` — Arquivos ignorados pelo controle de versão
-- 📄 `.nvmrc` — Versão padronizada do Node.js
-- 📄 `.prettierrc` — Regras de formatação de código do Prettier
-- 📄 `eslint.config.js` — Configuração do ESLint v9
-- 📄 `index.html` — HTML principal e container da aplicação React
-- 📄 `package-lock.json` — Registo de versões exatas das dependências npm
-- 📄 `package.json` — Dependências e scripts do projeto
-- 📄 `README.md` — Documentação da UI
-- 📄 `tsconfig.json` — Configuração base do TypeScript
-- 📄 `tsconfig.app.json` — Configuração TypeScript da aplicação React
-- 📄 `tsconfig.node.json` — Configuração TypeScript do Vite/Node
-- 📄 `vite.config.ts` — Configuração do bundler Vite (Porta 4200)
+```mermaid
+flowchart LR
+    Browser["Navegador do Usuário"] --> UI["React UI · Vite"]
+    UI --> Router["React Router · Rotas & Layouts"]
+    Router --> Pages["Pages · Views"]
+    Pages --> Components["Shared & Custom Components · MUI"]
+    Pages --> Hooks["Custom Hooks · Estado & Lógica"]
+    Hooks --> Services["Services · API Client & WebSocket"]
+    Services -. "requisições HTTP / WS" .-> API["NATIVE Customer Management API"]
 
-</details>
+    ArchitectureDoc["📐 Arquitetura detalhada e estrutura de pastas"]
+    ComponentsDoc["🧩 Guia de componentes, Data Grid e design system"]
+    click ArchitectureDoc "./docs/architecture.md" "Abrir arquitetura detalhada"
+    click ComponentsDoc "./docs/components.md#componentes-principais" "Abrir guia de componentes"
+```
+
+> - [📐 Arquitetura detalhada, camadas e estrutura de pastas](docs/architecture.md)
+> - [🧩 Guia de componentes, Data Grid otimizado e galeria de telas](docs/components.md)
+
+---
+
+## 🖼️ Prévia da Aplicação
+
+Abaixo está a visualização multi-dispositivo da aplicação, demonstrando a responsividade e adaptação do tema em diferentes resoluções.
+
+### 📱 Visão Geral Multi-dispositivo (Dark & Light Mode)
+
+![NATIVE Customer Management UI - Multi Devices](./docs/assets/devices_preview.png)
+
+> Veja a [Galeria Completa de Capturas de Tela](docs/components.md#galeria-de-telas) no guia de componentes para explorar todas as visões de páginas, menus e estados da interface.
 
 ---
 
 ## 🚀 Pré-requisitos e Gestão de Versão (NVM & Node.js)
 
-Para manter a consistência do ambiente entre todos os desenvolvedores e no pipeline de CI/CD, o projeto padroniza as versões do Node.js e do gestor de pacotes NPM.
+Para manter a consistência do ambiente entre os desenvolvedores e no pipeline de CI/CD, o projeto padroniza a versão do Node.js.
 
-- **Node.js**: `v26.5.0` (definido no arquivo `.nvmrc`)
+- **Node.js:** `v26.5.0` (definido no arquivo `.nvmrc`)
+- **NPM:** `v10.x` ou superior
+- **NVM (Node Version Manager):** recomendado para alternar entre versões do Node.js.
 
-- **NPM**: `v10.x` ou superior (gerenciado automaticamente pelo Node)
+### Como instalar o NVM
 
-- **NVM (Node Version Manager)**: Recomendado para alternar a versão do Node facilmente.
+[NVM Download](https://www.nvmnode.com/pt/guide/download.html)
 
-### Como instalar o NVM:
-
-`https://www.nvmnode.com/pt/guide/download.html`
-
-### Como alternar para a versão correta do Node via NVM:
+### Como alternar para a versão correta do Node via NVM
 
 **Linux / macOS / WSL:**
 
-```
+```bash
 nvm use
-
 ```
 
 **Windows (`nvm-windows`):**
 
-```
+```cmd
 nvm use 26.5.0
-
 ```
+
+---
 
 ## ⚙️ Configuração do Ambiente
 
 1. **Clonar o repositório e acessar a pasta da UI:**
 
-   ```
+   ```bash
    git clone https://github.com/DiegoSantos18/NATIVE.CustomerManagement.UI.git
    cd NATIVE.CustomerManagement.UI
-
    ```
 
-2. **Garantir a versão correta do Node.js:**
+2. **Selecionar a versão do Node.js definida pelo projeto:**
 
-   ```
+   ```bash
    nvm use
-
    ```
 
-   _(No VS Code, pode pressionar `Ctrl + Shift + P` -> `Tasks: Run Task` -> `Usar versão do Node (.nvmrc)`)._
+3. **Instalar as dependências:**
 
-3. **Instalar as dependências do projeto:**
-
-   ```
+   ```bash
    npm install
-
    ```
 
-4. **Configurar as Variáveis de Ambiente:**
-   Copie o arquivo `.env.example` para criar o arquivo `.env` local:
+4. **Configurar as variáveis de ambiente:**
 
+   Copie `.env.example` para `.env` e ajuste os valores locais conforme necessário:
+
+   ```bash
+   cp .env.example .env
    ```
-   # Windows PowerShell
+
+   No Windows PowerShell, você também pode usar:
+
+   ```powershell
    if (!(Test-Path .env)) { Copy-Item .env.example .env }
-
-   # Linux / Bash
-   cp -n .env.example .env
-
    ```
 
-   _(No VS Code, pode pressionar `Ctrl + Shift + P` -> `Tasks: Run Task` -> `Copiar .env.example para .env`)._
+---
 
 ## 📜 Scripts Disponíveis
 
-No arquivo `package.json`, estão configurados os seguintes scripts:
+| Comando                  | Descrição                                                             |
+| ------------------------ | --------------------------------------------------------------------- |
+| `npm run dev`            | Inicia o servidor de desenvolvimento na porta `4200` com HMR do Vite. |
+| `npm run build`          | Compila o TypeScript e gera o bundle minificado na pasta `dist/`.     |
+| `npm run preview`        | Executa a versão de produção compilada localmente para verificação.   |
+| `npm run test`           | Executa a suíte de testes unitários com o Vitest.                     |
+| `npm run lint`           | Executa a verificação estática do código com ESLint v9.               |
+| `npm run lint:fix`       | Corrige automaticamente problemas identificados pelo ESLint.          |
+| `npm run format`         | Formata o código nos diretórios do projeto utilizando o Prettier.     |
+| `npm run format:check`   | Verifica a formatação do código via Prettier.                         |
+| `npm run check:circular` | Verifica dependências circulares no código-fonte com Madge.           |
+| `npm run check:all`      | Executa verificações completas (Prettier, ESLint, Madge e Build).     |
 
-| Comando            | Descrição                                                             |
-| ------------------ | --------------------------------------------------------------------- |
-| `npm run dev`      | Inicia o servidor de desenvolvimento na porta `4200` com HMR do Vite. |
-| `npm run build`    | Compila o TypeScript e gera o bundle minificado na pasta `dist/`.     |
-| `npm run preview`  | Executa a versão de produção compilada localmente para verificação.   |
-| `npm run test`     | Executa a suíte de testes unitários com o Vitest.                     |
-| `npm run lint`     | Executa a verificação estática do código com ESLint.                  |
-| `npm run lint:fix` | Corrige automaticamente problemas identificados pelo ESLint.          |
-| `npm run format`   | Formata o código nos diretórios do projeto utilizando o Prettier.     |
+---
 
 ## 🏃 Como Executar a Aplicação
 
@@ -183,12 +142,13 @@ No arquivo `package.json`, estão configurados os seguintes scripts:
 
 Para subir o front-end localmente conectando à API:
 
-```
+```bash
 npm run dev
-
 ```
 
 O front-end estará acessível em: `http://localhost:4200`
+
+---
 
 ## 🌐 Mapeamento de Portas do Ecossistema
 
@@ -196,4 +156,4 @@ O front-end estará acessível em: `http://localhost:4200`
 | ----------------------- | ----------------------- | ---------------------- |
 | **Front-end (UI)**      | `http://localhost:4200` | Aplicação React + Vite |
 | **Back-end (API REST)** | `http://localhost:3000` | API Express / Node.js  |
-| **WebSocket**           | `http://localhost:3000` | Servidor Socket.io     |
+| **WebSocket**           | `http://localhost:3000` | Socket.io Server       |

@@ -40,4 +40,67 @@
       line-height: 1.5;
     }
   }
+
+  .content {
+    min-width: 0;
+  }
+
+  .customer-city-cell {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .customer-city-name {
+    overflow: hidden;
+    color: var(--text-main);
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .view-customer-button {
+    color: var(--text-muted);
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+
+    &:hover {
+      color: var(--primary);
+      background-color: var(--accent-glow);
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .customers-container {
+    gap: 1rem;
+
+    .page-header {
+      .title-wrapper {
+        gap: 0.5rem;
+
+        .header-icon {
+          font-size: 1.6rem;
+        }
+
+        .page-title {
+          font-size: 1.4rem;
+        }
+      }
+
+      .page-subtitle {
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .customers-container {
+    .view-customer-button {
+      transition: none;
+    }
+  }
 }
