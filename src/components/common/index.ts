@@ -1,5 +1,6 @@
 export { LoadingComponent } from './loading/LoadingComponent';
 export { BreadcrumbComponent } from './breadcrumb/BreadcrumbComponent';
+export { PageHeaderComponent } from './page-header/PageHeaderComponent';
 export { CountUpComponent } from './count-up/CountUpComponent';
 export { ProgressBarComponent } from './progress-bar/ProgressBarComponent';
 export { HeaderComponent } from './header/HeaderComponent';

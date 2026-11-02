@@ -1,4 +1,11 @@
-import { TextField, Button, Divider, SaveIcon, RefreshIcon } from '@/components/common/mui';
+import {
+  TextField,
+  Button,
+  Divider,
+  SaveIcon,
+  RefreshIcon,
+  InfoIcon,
+} from '@/components/common/mui';
 import type { CustomerFormProps } from './customer-form.types';
 import './CustomerForm.scss';
 
@@ -19,7 +26,10 @@ export function CustomerForm({
           name="firstName"
           value={formData.firstName}
           onChange={onChange}
+          error={Boolean(formErrors.firstName)}
+          helperText={formErrors.firstName}
           fullWidth
+          required
           variant="outlined"
         />
         <TextField
@@ -83,6 +93,12 @@ export function CustomerForm({
           name="city"
           value={formData.city}
           onChange={onChange}
+          helperText={
+            <span className="customer-form__field-hint">
+              <InfoIcon fontSize="small" />
+              UF opcional. Para separá-la, prefira vírgula: Cidade, UF.
+            </span>
+          }
           fullWidth
           variant="outlined"
         />

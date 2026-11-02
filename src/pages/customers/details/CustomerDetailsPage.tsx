@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Typography,
@@ -7,19 +7,38 @@ import {
   PersonIcon,
   ArrowBackIcon,
 } from '@/components/common/mui';
-import { CustomCardComponent } from '@/components/common';
+import { CustomCardComponent, PageHeaderComponent } from '@/components/common';
 import { useNotification } from '@/hooks';
-import { customerService } from '@/api/customers';
-import { CustomerForm, type CustomerFormData } from './form';
+import { customerService, type Customer } from '@/api/customers';
+import {
+  CustomerForm,
+  customerFormSchema,
+  type CustomerFormData,
+  type CustomerFormErrors,
+} from './form';
 import './CustomerDetailsPage.scss';
+
+function toCustomerFormData(customer: Customer): CustomerFormData {
+  return {
+    firstName: customer.firstName || '',
+    lastName: customer.lastName || '',
+    email: customer.email || '',
+    gender: customer.gender || '',
+    company: customer.company || '',
+    city: customer.city || '',
+    title: customer.title || '',
+  };
+}
 
 export function CustomerDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { showNotification } = useNotification();
+  const customerRequestId = useRef(0);
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loadedCustomerId, setLoadedCustomerId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const loading = Boolean(id) && loadedCustomerId !== id;
 
   const [formData, setFormData] = useState<CustomerFormData>({
     firstName: '',
@@ -31,108 +50,96 @@ export function CustomerDetailsPage() {
     title: '',
   });
 
-  const [formErrors, setFormErrors] = useState({
+  const [formErrors, setFormErrors] = useState<CustomerFormErrors>({
+    firstName: '',
     email: '',
   });
 
-  const fetchCustomer = useCallback(
-    async (customerId: string) => {
-      try {
-        setLoading(true);
-        const data = await customerService.getById(customerId);
-        setFormData({
-          firstName: data.firstName || '',
-          lastName: data.lastName || '',
-          email: data.email || '',
-          gender: data.gender || '',
-          company: data.company || '',
-          city: data.city || '',
-          title: data.title || '',
-        });
-      } catch (err: unknown) {
-        const errorObj = err as { response?: { status?: number } };
-        const message =
-          errorObj?.response?.status === 404
-            ? 'Cliente não encontrado.'
-            : 'Falha ao carregar os dados do cliente. Tente novamente.';
-        showNotification({ severity: 'error', message });
-      } finally {
-        setLoading(false);
-      }
+  const applyCustomer = useCallback((customer: Customer) => {
+    setFormData(toCustomerFormData(customer));
+    setFormErrors({ firstName: '', email: '' });
+  }, []);
+
+  const notifyCustomerLoadError = useCallback(
+    (err: unknown) => {
+      const errorObj = err as { response?: { status?: number } };
+      const message =
+        errorObj?.response?.status === 404
+          ? 'Cliente não encontrado.'
+          : 'Falha ao carregar os dados do cliente. Tente novamente.';
+      showNotification({ severity: 'error', message });
     },
     [showNotification]
   );
 
   useEffect(() => {
     if (!id) return;
-    let isMounted = true;
 
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        const data = await customerService.getById(id);
-        if (!isMounted) return;
-
-        setFormData({
-          firstName: data.firstName || '',
-          lastName: data.lastName || '',
-          email: data.email || '',
-          gender: data.gender || '',
-          company: data.company || '',
-          city: data.city || '',
-          title: data.title || '',
-        });
-      } catch (err: unknown) {
-        if (!isMounted) return;
-        const errorObj = err as { response?: { status?: number } };
-        const message =
-          errorObj?.response?.status === 404
-            ? 'Cliente não encontrado.'
-            : 'Falha ao carregar os dados do cliente. Tente novamente.';
-        showNotification({ severity: 'error', message });
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    void loadData();
+    const requestId = ++customerRequestId.current;
+    customerService
+      .getById(id)
+      .then((customer) => {
+        if (customerRequestId.current === requestId) applyCustomer(customer);
+      })
+      .catch((err: unknown) => {
+        if (customerRequestId.current === requestId) notifyCustomerLoadError(err);
+      })
+      .finally(() => {
+        if (customerRequestId.current === requestId) setLoadedCustomerId(id);
+      });
 
     return () => {
-      isMounted = false;
+      customerRequestId.current += 1;
     };
-  }, [id, showNotification]);
+  }, [id, applyCustomer, notifyCustomerLoadError]);
+
+  const handleReset = () => {
+    if (!id) return;
+
+    const requestId = ++customerRequestId.current;
+    setLoadedCustomerId(null);
+    customerService
+      .getById(id)
+      .then((customer) => {
+        if (customerRequestId.current === requestId) applyCustomer(customer);
+      })
+      .catch((err: unknown) => {
+        if (customerRequestId.current === requestId) notifyCustomerLoadError(err);
+      })
+      .finally(() => {
+        if (customerRequestId.current === requestId) setLoadedCustomerId(id);
+      });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (name === 'email') {
-      setFormErrors((prev) => ({ ...prev, email: '' }));
+    if (name === 'firstName' || name === 'email') {
+      setFormErrors((prev) => ({ ...prev, [name]: '' }));
     }
-  };
-
-  const validateForm = () => {
-    let isValid = true;
-    const errors = { email: '' };
-
-    if (!formData.email.trim()) {
-      errors.email = 'O e-mail é obrigatório.';
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Formato de e-mail inválido.';
-      isValid = false;
-    }
-
-    setFormErrors(errors);
-    return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!id || !validateForm()) return;
+    if (!id) return;
+
+    const result = customerFormSchema.safeParse(formData);
+    if (!result.success) {
+      const errors: CustomerFormErrors = { firstName: '', email: '' };
+      for (const issue of result.error.issues) {
+        if (issue.path[0] === 'firstName' || issue.path[0] === 'email') {
+          errors[issue.path[0]] = issue.message;
+        }
+      }
+      setFormErrors(errors);
+      return;
+    }
+
+    setFormErrors({ firstName: '', email: '' });
 
     try {
       setSubmitting(true);
-      await customerService.update(id, formData);
+      await customerService.update(id, result.data);
       showNotification({
         severity: 'success',
         message: 'Alterações salvas com sucesso!',
@@ -152,39 +159,31 @@ export function CustomerDetailsPage() {
 
   return (
     <div className="customer-details-container">
-      {/* Header com o Botão Voltar alinhado à direita */}
-      <div className="page-header">
-        <div className="page-heading">
-          <div className="title-wrapper">
-            <PersonIcon className="header-icon" />
-            <Typography variant="h4" component="h1" className="page-title">
-              Detalhes do Cliente #{id}
-            </Typography>
-          </div>
-          <Typography variant="body2" className="page-subtitle">
-            Visualização e alteração de dados cadastrais do cliente no sistema.
-          </Typography>
-        </div>
-
-        <Button
-          className="refresh-button"
-          variant="outlined"
-          startIcon={<ArrowBackIcon />}
-          onClick={() => navigate('/customers')}
-        >
-          Voltar
-        </Button>
-      </div>
+      <PageHeaderComponent
+        title={`Detalhes do Cliente #${id}`}
+        subtitle="Visualização e alteração de dados cadastrais do cliente no sistema."
+        icon={<PersonIcon />}
+        action={
+          <Button
+            className="page-header-action page-header-action--outlined"
+            variant="outlined"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate('/customers')}
+          >
+            Voltar
+          </Button>
+        }
+      />
 
       {/* Conteúdo dentro do Card Padrão */}
       <CustomCardComponent
         title="Formulário de Cadastro"
-        subtitle="Altere os campos abaixo para atualizar o registro do cliente."
-        icon={<PersonIcon />}
         footerInfo="Clique em 'Salvar Alterações' para confirmar o envio dos dados atualizados."
       >
         <div className="content-inner">
-          {loading ? (
+          {!id ? (
+            <Typography>Identificador do cliente não informado.</Typography>
+          ) : loading ? (
             <div
               style={{
                 display: 'flex',
@@ -202,7 +201,7 @@ export function CustomerDetailsPage() {
               submitting={submitting}
               onChange={handleChange}
               onSubmit={(e) => void handleSubmit(e)}
-              onReset={() => id && void fetchCustomer(id)}
+              onReset={handleReset}
             />
           )}
         </div>
