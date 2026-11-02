@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { customerService, type Customer } from '@/api/customers';
+import { customerService, type Customer, type CustomerSortField } from '@/api/customers';
 import {
   PeopleIcon,
   EditNoteIcon,
@@ -10,6 +10,8 @@ import {
   Box,
   Typography,
   type GridColDef,
+  type GridFilterModel,
+  type GridSortModel,
 } from '@/components/common/mui';
 import {
   CustomCardComponent,
@@ -37,6 +39,8 @@ export function CustomersPage() {
     pageSize: DEFAULT_PAGE_SIZE,
   });
 
+  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
   const [totalItems, setTotalItems] = useState(0);
 
   const [savedCities, setSavedCities] = useFilterStorage<string[]>(CUSTOMERS_CITY_FILTER_KEY, []);
@@ -81,6 +85,29 @@ export function CustomersPage() {
 
     async function initializeCustomers() {
       try {
+        setLoading(true);
+
+        const activeColumnFilter = filterModel.items[0];
+
+        const isValueRequired =
+          activeColumnFilter?.operator !== 'isEmpty' &&
+          activeColumnFilter?.operator !== 'isNotEmpty';
+
+        const hasValidValue =
+          activeColumnFilter?.value !== undefined &&
+          activeColumnFilter?.value !== '' &&
+          (!Array.isArray(activeColumnFilter?.value) || activeColumnFilter.value.length > 0);
+
+        const shouldSendFilter = activeColumnFilter?.field && (!isValueRequired || hasValidValue);
+
+        const activeSort = sortModel[0];
+        const sortParam = activeSort
+          ? {
+              sortBy: activeSort.field as CustomerSortField,
+              sortOrder: activeSort.sort ?? 'asc',
+            }
+          : undefined;
+
         const result = await customerService.getPaginated({
           pagination: {
             page: pagination.page + 1,
@@ -88,7 +115,17 @@ export function CustomersPage() {
           },
           filters: {
             ...(selectedCities.length > 0 ? { cities: selectedCities } : {}),
+            ...(shouldSendFilter
+              ? {
+                  field: activeColumnFilter.field,
+                  operator: activeColumnFilter.operator ?? 'contains',
+                  ...(activeColumnFilter.value !== undefined
+                    ? { value: activeColumnFilter.value }
+                    : {}),
+                }
+              : {}),
           },
+          ...(sortParam ? { sort: sortParam } : {}),
         });
 
         if (isActive) {
@@ -114,11 +151,16 @@ export function CustomersPage() {
     return () => {
       isActive = false;
     };
-  }, [pagination.page, pagination.pageSize, selectedCities, showNotification]);
+  }, [
+    pagination.page,
+    pagination.pageSize,
+    selectedCities,
+    filterModel,
+    sortModel,
+    showNotification,
+  ]);
 
   const handleApplyCityFilter = (nextCities: string[]) => {
-    setLoading(true);
-
     setPagination((current) => ({
       ...current,
       page: 0,
@@ -143,14 +185,24 @@ export function CustomersPage() {
   };
 
   const handlePaginationChange = (nextPagination: typeof pagination) => {
-    setLoading(true);
     setPagination(nextPagination);
+  };
+
+  const handleFilterModelChange = (newModel: GridFilterModel) => {
+    setFilterModel(newModel);
+    setPagination((current) => ({ ...current, page: 0 }));
+  };
+
+  const handleSortModelChange = (newModel: GridSortModel) => {
+    setSortModel(newModel);
   };
 
   const columns: GridColDef<Customer>[] = [
     {
       field: 'id',
       headerName: 'ID',
+      filterable: true,
+      sortable: true,
       width: 80,
     },
     {
@@ -158,24 +210,32 @@ export function CustomersPage() {
       headerName: 'Nome',
       flex: 1,
       minWidth: 140,
+      filterable: true,
+      sortable: true,
     },
     {
       field: 'lastName',
       headerName: 'Sobrenome',
       flex: 1,
       minWidth: 140,
+      filterable: true,
+      sortable: true,
     },
     {
       field: 'email',
       headerName: 'E-mail',
       flex: 1.5,
       minWidth: 220,
+      filterable: true,
+      sortable: true,
     },
     {
       field: 'city',
       headerName: 'Cidade',
       flex: 1,
       minWidth: 160,
+      filterable: true,
+      sortable: true,
       renderCell: ({ row }) => {
         const { city } = getCityAndState(row.city);
 
@@ -192,6 +252,7 @@ export function CustomersPage() {
       width: 60,
       minWidth: 60,
       sortable: false,
+      filterable: false,
       valueGetter: (_value, row) => getCityAndState(row.city).state || '—',
     },
     {
@@ -260,8 +321,12 @@ export function CustomersPage() {
             columns={columns}
             loading={loading}
             paginationMode="server"
+            sortingMode="server"
+            filterMode="server"
             paginationModel={pagination}
             onPaginationModelChange={handlePaginationChange}
+            onFilterModelChange={handleFilterModelChange}
+            onSortModelChange={handleSortModelChange}
             rowCount={totalItems}
             pageSizeOptions={[5, 10, 25]}
             disableRowSelectionOnClick
