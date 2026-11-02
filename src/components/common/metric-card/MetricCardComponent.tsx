@@ -6,7 +6,7 @@ import {
   CardContent,
   Typography,
 } from '@/components/common/mui';
-import { CountUpComponent } from '@/components/common/count-up/CountUpComponent';
+import { CountUpComponent } from '../count-up/CountUpComponent';
 import './MetricCardComponent.scss';
 
 interface MetricCardProps {

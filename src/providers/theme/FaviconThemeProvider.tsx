@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAppTheme } from '@/hooks';
+import { useAppTheme } from '@/hooks/theme/useAppTheme';
 import { FaviconDarkPNG, FaviconLightPNG } from '@/assets';
 
 export function FaviconProvider() {

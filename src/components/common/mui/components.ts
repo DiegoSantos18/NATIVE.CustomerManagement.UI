@@ -28,7 +28,23 @@ export {
   Checkbox,
   Popover,
   FormControlLabel,
+  Paper,
+  TablePagination,
+  Pagination,
+  PaginationItem,
+  Stack,
 } from '@mui/material';
 export { ptBR } from '@mui/x-data-grid/locales';
-export { DataGrid, type DataGridProps, type GridColDef } from '@mui/x-data-grid';
+export {
+  DataGrid,
+  useGridApiContext,
+  useGridSelector,
+  gridPaginationModelSelector,
+  gridPageCountSelector,
+  gridRowCountSelector,
+  type DataGridProps,
+  type GridColDef,
+  type GridFilterModel,
+  type GridSortModel,
+} from '@mui/x-data-grid';
 export { createTheme, ThemeProvider as MuiThemeProvider, type Theme } from '@mui/material/styles';
