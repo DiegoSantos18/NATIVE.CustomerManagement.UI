@@ -1,4 +1,4 @@
-import type { IAudited, IEntity } from '@/api/common';
+import type { IAudited, IEntity } from '@/api/common/types';
 
 export interface Customer extends IEntity, IAudited {
   firstName: string;

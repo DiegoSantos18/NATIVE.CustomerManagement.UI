@@ -6,20 +6,8 @@ import {
   InputAdornment,
   SearchIcon,
 } from '@/components/common/mui';
-import type { ReactNode } from 'react';
+import type { CustomCardComponentProps } from './custom-card.types';
 import './CustomCardComponent.scss';
-
-export interface CustomCardComponentProps {
-  title: string;
-  subtitle?: string;
-  icon?: ReactNode;
-  searchPlaceholder?: string;
-  searchValue?: string;
-  onSearchChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  footerInfo?: ReactNode;
-  headerAction?: ReactNode;
-  children: ReactNode;
-}
 
 export function CustomCardComponent({
   title,

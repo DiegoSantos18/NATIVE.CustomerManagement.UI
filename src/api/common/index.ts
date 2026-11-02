@@ -1,2 +1,11 @@
 export { api } from './client';
-export type { IAudited, IEntity, PaginationParams, PaginatedResult } from './types';
+export type {
+  IAudited,
+  IEntity,
+  PaginatedResult,
+  PaginationParams,
+  SortOrder,
+  SortParams,
+  DataGridFilterParams,
+  QueryParams,
+} from './types';

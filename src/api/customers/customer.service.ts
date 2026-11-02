@@ -14,12 +14,23 @@ export const customerService = {
     return data;
   },
 
-  async getPaginated(params: ListCustomersParams = {}): Promise<PaginatedResult<Customer>> {
+  async getPaginated(
+    params: ListCustomersParams = { pagination: { page: 1, pageSize: 10 } }
+  ): Promise<PaginatedResult<Customer>> {
     const { data } = await api.post<PaginatedResult<Customer>>(
       `${CUSTOMER_BASE_URL}/search`,
       params
     );
+    return data;
+  },
 
+  async getById(id: number | string): Promise<Customer> {
+    const { data } = await api.get<Customer>(`${CUSTOMER_BASE_URL}/${id}`);
+    return data;
+  },
+
+  async update(id: number | string, customerData: Partial<Customer>): Promise<Customer> {
+    const { data } = await api.put<Customer>(`${CUSTOMER_BASE_URL}/${id}`, customerData);
     return data;
   },
 };

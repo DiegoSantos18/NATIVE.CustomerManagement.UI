@@ -266,7 +266,7 @@ export function DashboardPage() {
             onClear={() => setSelectedCities([])}
           />
         }
-        footerInfo="Utilize os filtros acima ou acesse diretamente os detalhes de cada localidade."
+        footerInfo={`${filteredCities.length} localidade(s) encontrada(s) para os filtros aplicados.`}
       >
         <CustomDataGridComponent
           rows={filteredCities}

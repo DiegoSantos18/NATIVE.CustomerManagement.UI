@@ -11,7 +11,7 @@ import {
   Tooltip,
   Collapse,
 } from '@/components/common/mui';
-import { FooterComponent } from '@/components/common/footer/FooterComponent';
+import { FooterComponent } from '../footer/FooterComponent';
 import { LogoDarkPNG, LogoLightPNG } from '@/assets';
 import { useSidebarToggle, useAppTheme } from '@/hooks';
 import './SidebarComponent.scss';

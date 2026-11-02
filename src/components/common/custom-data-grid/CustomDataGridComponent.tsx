@@ -1,4 +1,17 @@
-import { ptBR, DataGrid, type DataGridProps } from '@/components/common/mui';
+import {
+  ptBR,
+  DataGrid,
+  type DataGridProps,
+  useGridApiContext,
+  useGridSelector,
+  gridPaginationModelSelector,
+  gridPageCountSelector,
+  gridRowCountSelector,
+  Pagination,
+  PaginationItem,
+  TablePagination,
+  Tooltip,
+} from '@/components/common/mui';
 import './CustomDataGridComponent.scss';
 
 type CheckboxPosition = 'first' | 'last';
@@ -6,6 +19,84 @@ type CheckboxPosition = 'first' | 'last';
 export type CustomDataGridComponentProps<T extends object> = DataGridProps<T> & {
   checkboxPosition?: CheckboxPosition;
 };
+
+function CustomPagination() {
+  const apiRef = useGridApiContext();
+  const paginationModel = useGridSelector(apiRef, gridPaginationModelSelector);
+  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+  const rowCount = useGridSelector(apiRef, gridRowCountSelector);
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        padding: '0 8px',
+      }}
+    >
+      <TablePagination
+        component="div"
+        count={rowCount}
+        page={paginationModel.page}
+        rowsPerPage={paginationModel.pageSize}
+        onPageChange={(_event, newPage) => {
+          apiRef.current.setPage(newPage);
+        }}
+        onRowsPerPageChange={(event) => {
+          apiRef.current.setPageSize(parseInt(event.target.value, 10));
+        }}
+        rowsPerPageOptions={[5, 10, 25]}
+        labelRowsPerPage="Linhas por página:"
+        labelDisplayedRows={() => ''}
+        sx={{
+          '& .MuiTablePagination-displayedRows': {
+            display: 'none',
+          },
+          '& .MuiTablePagination-actions': {
+            display: 'none',
+          },
+        }}
+      />
+
+      <Pagination
+        color="primary"
+        count={pageCount}
+        page={paginationModel.page + 1}
+        onChange={(_event, value) => {
+          apiRef.current.setPage(value - 1);
+        }}
+        showFirstButton
+        showLastButton
+        renderItem={(item) => {
+          let tooltipTitle = '';
+
+          if (item.type === 'first') tooltipTitle = 'Ir para a primeira página';
+          if (item.type === 'last') tooltipTitle = 'Ir para a última página';
+          if (item.type === 'next') tooltipTitle = 'Ir para a próxima página';
+          if (item.type === 'previous') tooltipTitle = 'Ir para a página anterior';
+          if (item.type === 'page') tooltipTitle = `Página ${item.page}`;
+          if (item.type === 'start-ellipsis' || item.type === 'end-ellipsis') {
+            tooltipTitle = 'Mais páginas';
+          }
+
+          const paginationItemNode = <PaginationItem {...item} />;
+
+          if (!tooltipTitle) {
+            return paginationItemNode;
+          }
+
+          return (
+            <Tooltip key={item.type + (item.page ?? '')} title={tooltipTitle} placement="top" arrow>
+              <span>{paginationItemNode}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    </div>
+  );
+}
 
 export function CustomDataGridComponent<T extends object>({
   rows,
@@ -47,11 +138,11 @@ export function CustomDataGridComponent<T extends object>({
               transform: translateZ(0);
             }
 
-            .custom-data-grid .MuiDataGrid-row.city-row-even .MuiDataGrid-cell[data-field='${stickyFirstField}'] {
+            .custom-data-grid .MuiDataGrid-row.data-grid-row-even .MuiDataGrid-cell[data-field='${stickyFirstField}'] {
               background-color: var(--bg-surface) !important;
             }
 
-            .custom-data-grid .MuiDataGrid-row.city-row-odd .MuiDataGrid-cell[data-field='${stickyFirstField}'] {
+            .custom-data-grid .MuiDataGrid-row.data-grid-row-odd .MuiDataGrid-cell[data-field='${stickyFirstField}'] {
               background-color: var(--bg-surface-hover) !important;
             }
 
@@ -84,11 +175,11 @@ export function CustomDataGridComponent<T extends object>({
               transform: translateZ(0);
             }
 
-            .custom-data-grid .MuiDataGrid-row.city-row-even .MuiDataGrid-cell[data-field='${stickyLastField}'] {
+            .custom-data-grid .MuiDataGrid-row.data-grid-row-even .MuiDataGrid-cell[data-field='${stickyLastField}'] {
               background-color: var(--bg-surface) !important;
             }
 
-            .custom-data-grid .MuiDataGrid-row.city-row-odd .MuiDataGrid-cell[data-field='${stickyLastField}'] {
+            .custom-data-grid .MuiDataGrid-row.data-grid-row-odd .MuiDataGrid-cell[data-field='${stickyLastField}'] {
               background-color: var(--bg-surface-hover) !important;
             }
 
@@ -121,11 +212,11 @@ export function CustomDataGridComponent<T extends object>({
               transform: translateZ(0);
             }
 
-            .custom-data-grid .MuiDataGrid-row.city-row-even .MuiDataGrid-cell[data-field='${stickyLastDataField}'] {
+            .custom-data-grid .MuiDataGrid-row.data-grid-row-even .MuiDataGrid-cell[data-field='${stickyLastDataField}'] {
               background-color: var(--bg-surface) !important;
             }
 
-            .custom-data-grid .MuiDataGrid-row.city-row-odd .MuiDataGrid-cell[data-field='${stickyLastDataField}'] {
+            .custom-data-grid .MuiDataGrid-row.data-grid-row-odd .MuiDataGrid-cell[data-field='${stickyLastDataField}'] {
               background-color: var(--bg-surface-hover) !important;
             }
 
@@ -156,7 +247,9 @@ export function CustomDataGridComponent<T extends object>({
         getRowClassName={
           getRowClassName ||
           ((params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? 'city-row-even' : 'city-row-odd')
+            params.indexRelativeToCurrentPage % 2 === 0
+              ? 'data-grid-row-even'
+              : 'data-grid-row-odd')
         }
         initialState={{
           ...initialState,
@@ -168,27 +261,15 @@ export function CustomDataGridComponent<T extends object>({
             ...initialState?.pagination,
           },
         }}
+        slots={{
+          pagination: CustomPagination,
+        }}
         localeText={{
           ...ptBR.components.MuiDataGrid.defaultProps.localeText,
           noRowsLabel: 'Nenhum registro encontrado',
           noResultsOverlayLabel: 'Nenhum resultado encontrado',
         }}
         slotProps={{
-          pagination: {
-            labelDisplayedRows: ({
-              from,
-              to,
-              count,
-            }: {
-              from: number;
-              to: number;
-              count: number;
-            }) => {
-              const currentCount = to - from + 1;
-
-              return `${currentCount} de ${count !== -1 ? count : to}`;
-            },
-          },
           ...slotProps,
         }}
         {...props}
