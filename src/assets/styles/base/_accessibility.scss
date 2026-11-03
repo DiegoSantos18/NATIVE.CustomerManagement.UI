@@ -1,0 +1,27 @@
+// ==========================================================================
+// ACESSIBILIDADE GLOBAL
+// Foco visível e preferência por movimento reduzido
+// ==========================================================================
+
+// Destaque de foco para navegação por teclado
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 3px;
+}
+
+// Evita que o foco fique escondido por estilos de componentes
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// Respeita a preferência do usuário por menos animações
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

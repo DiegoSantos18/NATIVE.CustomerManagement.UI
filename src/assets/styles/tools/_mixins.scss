@@ -1,0 +1,35 @@
+// ==========================================================================
+// MIXINS
+// Pontos de quebra responsivos da aplicação
+// ==========================================================================
+
+$mixin-mobile: 768px;
+$mixin-tablet: 1024px;
+$mixin-desktop: 1280px;
+
+// Até o limite informado
+@mixin mobile {
+  @media (max-width: $mixin-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $mixin-tablet) {
+    @content;
+  }
+}
+
+// A partir do limite informado
+@mixin desktop {
+  @media (min-width: $mixin-desktop) {
+    @content;
+  }
+}
+
+// Entre dois limites
+@mixin tablet-only {
+  @media (min-width: ($mixin-mobile + 1px)) and (max-width: $mixin-tablet) {
+    @content;
+  }
+}

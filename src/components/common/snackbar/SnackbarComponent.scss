@@ -1,0 +1,173 @@
+.app-snackbar {
+  width: min(420px, calc(100vw - 32px));
+
+  .app-snackbar-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid;
+    border-radius: 14px;
+    box-shadow: var(--shadow-elevation);
+  }
+
+  .app-snackbar-alert {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 0.85rem 1rem 1.1rem;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    border-radius: inherit;
+
+    .MuiAlert-message {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .MuiAlert-action {
+      position: absolute;
+      z-index: 2;
+      top: 0.55rem;
+      right: 0.55rem;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .app-snackbar-content {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    padding-right: 1.5rem;
+    padding-left: 4.5rem;
+  }
+
+  .app-snackbar-message {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .app-snackbar-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .app-snackbar-description {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .app-snackbar-watermark {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: -0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.13;
+    pointer-events: none;
+    transform: translateY(-50%) rotate(-15deg);
+
+    svg {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .app-snackbar-progress {
+    position: absolute;
+    z-index: 3;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    transform-origin: left;
+    animation: snackbar-progress linear forwards;
+  }
+
+  &--error {
+    .app-snackbar-container {
+      color: var(--snackbar-error-text);
+      background: var(--snackbar-error-bg);
+      border-color: var(--snackbar-error-border);
+    }
+
+    .app-snackbar-watermark {
+      color: var(--snackbar-error-icon);
+    }
+
+    .app-snackbar-progress {
+      background: var(--snackbar-error-progress);
+    }
+  }
+
+  &--warning {
+    .app-snackbar-container {
+      color: var(--snackbar-warning-text);
+      background: var(--snackbar-warning-bg);
+      border-color: var(--snackbar-warning-border);
+    }
+
+    .app-snackbar-watermark {
+      color: var(--snackbar-warning-icon);
+    }
+
+    .app-snackbar-progress {
+      background: var(--snackbar-warning-progress);
+    }
+  }
+
+  &--success {
+    .app-snackbar-container {
+      color: var(--snackbar-success-text);
+      background: var(--snackbar-success-bg);
+      border-color: var(--snackbar-success-border);
+    }
+
+    .app-snackbar-watermark {
+      color: var(--snackbar-success-icon);
+    }
+
+    .app-snackbar-progress {
+      background: var(--snackbar-success-progress);
+    }
+  }
+
+  &--info {
+    .app-snackbar-container {
+      color: var(--snackbar-info-text);
+      background: var(--snackbar-info-bg);
+      border-color: var(--snackbar-info-border);
+    }
+
+    .app-snackbar-watermark {
+      color: var(--snackbar-info-icon);
+    }
+
+    .app-snackbar-progress {
+      background: var(--snackbar-info-progress);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .app-snackbar {
+    .app-snackbar-content {
+      padding-right: 1.25rem;
+      padding-left: 4rem;
+    }
+
+    .app-snackbar-watermark svg {
+      width: 88px;
+      height: 88px;
+    }
+  }
+}

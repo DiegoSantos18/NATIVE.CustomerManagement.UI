@@ -1,0 +1,60 @@
+{
+  "name": "native.customermanagement.ui",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,scss,css,json}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx,scss,css,json}\"",
+    "check:circular": "npx --yes madge@8.0.0 --warning --circular --extensions ts,tsx --ts-config tsconfig.app.json src",
+    "check:all": "npm run format:check && npm run lint && npm run check:circular && npm run build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiegoSantos18/NATIVE.CustomerManagement.UI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/DiegoSantos18/NATIVE.CustomerManagement.UI/issues"
+  },
+  "homepage": "https://github.com/DiegoSantos18/NATIVE.CustomerManagement.UI#readme",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.5.0",
+    "@mui/material": "^9.5.0",
+    "@mui/x-data-grid": "^9.17.0",
+    "axios": "^1.21.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4",
+    "socket.io-client": "^4.8.4",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.7",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "sass-embedded": "^1.106.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vite": "^8.3.4"
+  }
+}

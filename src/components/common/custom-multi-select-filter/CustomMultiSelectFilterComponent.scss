@@ -1,0 +1,235 @@
+.custom-multi-select-filter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+
+  &-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+
+    svg {
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+  }
+
+  &-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 260px;
+    min-height: 40px;
+    padding: 6px 14px;
+    border-color: var(--border-color);
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    text-transform: none;
+
+    &:hover {
+      border-color: var(--border-hover);
+      background-color: var(--bg-surface-hover);
+    }
+
+    .custom-multi-select-filter-value {
+      flex: 1;
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--primary);
+    transform: translateY(0);
+    transition: transform 0.2s ease;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &-popover {
+    width: 320px;
+    max-width: calc(100vw - 32px);
+    margin-top: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px !important;
+    background-color: var(--bg-surface-raised) !important;
+    color: var(--text-main);
+    box-shadow: var(--shadow-elevation) !important;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+    background-color: var(--bg-surface-raised);
+  }
+
+  &-search {
+    .MuiInputBase-root {
+      color: var(--text-main);
+      background-color: var(--bg-surface);
+      border-radius: 8px;
+    }
+
+    .MuiOutlinedInput-notchedOutline {
+      border-color: var(--border-color);
+    }
+
+    .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+      border-color: var(--border-hover);
+    }
+
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: var(--border-focus);
+    }
+
+    .MuiInputBase-input {
+      color: var(--text-main);
+
+      &::placeholder {
+        color: var(--text-muted);
+        opacity: 1;
+      }
+    }
+
+    .MuiInputAdornment-root {
+      color: var(--text-muted);
+    }
+  }
+
+  &-options {
+    display: flex;
+    flex-direction: column;
+    max-height: 260px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background-color: var(--bg-surface-raised);
+    padding-right: 2px;
+  }
+
+  &-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    margin: 0 !important;
+    padding: 0 8px;
+    border-radius: 6px;
+    color: var(--text-main);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--bg-surface-hover);
+    }
+
+    .MuiCheckbox-root {
+      padding: 6px;
+      color: var(--text-muted);
+
+      &.Mui-checked {
+        color: var(--primary);
+      }
+
+      &.Mui-disabled {
+        color: var(--text-disabled);
+      }
+    }
+
+    .MuiFormControlLabel-label {
+      flex: 1;
+      color: var(--text-main);
+    }
+  }
+
+  &-select-all {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin-bottom: 6px !important;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-surface-raised);
+
+    &:hover {
+      background-color: var(--bg-surface-hover);
+    }
+  }
+
+  &-empty {
+    padding: 16px 8px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  &-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color);
+
+    button {
+      flex: 1;
+      text-transform: none;
+      border-radius: 8px;
+
+      &.MuiButton-outlined {
+        border-color: var(--border-color);
+        color: var(--text-main);
+
+        &:hover {
+          border-color: var(--border-hover);
+          background-color: var(--bg-surface-hover);
+        }
+      }
+
+      &.MuiButton-contained {
+        background-color: var(--primary);
+        color: var(--primary-contrast);
+
+        &:hover {
+          background-color: var(--primary-hover);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .custom-multi-select-filter {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+
+    &-trigger {
+      width: 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-multi-select-filter-option,
+  .custom-multi-select-filter-chevron {
+    transition: none !important;
+  }
+}

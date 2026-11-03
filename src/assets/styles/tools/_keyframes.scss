@@ -1,0 +1,81 @@
+// ==========================================================================
+// ANIMAÇÕES GLOBAIS
+// ==========================================================================
+
+// Loading: rotação no sentido horário
+@keyframes loading-spin-clockwise {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Loading: rotação no sentido anti-horário
+@keyframes loading-spin-counterclockwise {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+// Loading: respiração suave da marca
+@keyframes logo-breathe {
+  0%,
+  100% {
+    transform: scale(0.98);
+    opacity: 0.92;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Loading: preenchimento progressivo da tagline
+@keyframes tagline-fill {
+  0%,
+  10% {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  70%,
+  90% {
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+// Snackbar: progresso de duração
+@keyframes snackbar-progress {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
+// Icons: pulsando pra cima
+@keyframes pulse-up {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+// Icons: pulsando pra baixo
+@keyframes pulse-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}

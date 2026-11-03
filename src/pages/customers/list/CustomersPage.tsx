@@ -1,0 +1,430 @@
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { customerService, type Customer, type CustomerSortField } from '@/api/customers';
+import {
+  PeopleIcon,
+  EditNoteIcon,
+  PersonAddIcon,
+  DeleteOutlineIcon,
+  CloseIcon,
+  TuneIcon,
+  MoreVertIcon,
+  Box,
+  Button,
+  IconButton,
+  Tooltip,
+  type GridColDef,
+  type GridFilterModel,
+  type GridRowSelectionModel,
+  type GridSortModel,
+} from '@/components/common/mui';
+import {
+  CustomCardComponent,
+  CustomDataGridComponent,
+  CustomDataGridRowActions,
+  CustomMultiSelectFilterComponent,
+  PageHeaderComponent,
+  ViewModeToggleComponent,
+} from '@/components/common';
+import { CustomerCardListComponent } from './components/customer-card-list';
+import { useNotification, useFilterStorage } from '@/hooks';
+import { getCityAndState } from '@/utils';
+import './CustomersPage.scss';
+
+const DEFAULT_PAGE_SIZE = 10;
+const CUSTOMERS_CITY_FILTER_KEY = 'native_customers_city_filter';
+
+export function CustomersPage() {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { showNotification } = useNotification();
+
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const [pagination, setPagination] = useState({
+    page: 0,
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
+
+  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
+  const [totalItems, setTotalItems] = useState(0);
+  const [viewMode, setViewMode] = useState<'grid' | 'cards'>('grid');
+  const [advancedFiltersOpen, setAdvancedFiltersOpen] = useState(false);
+  const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>({
+    type: 'include',
+    ids: new Set(),
+  });
+  const [savedCities, setSavedCities] = useFilterStorage<string[]>(CUSTOMERS_CITY_FILTER_KEY, []);
+
+  const [selectedCities, setSelectedCities] = useState<string[]>(() => {
+    const cityParam = searchParams.get('city');
+    if (cityParam) {
+      return [cityParam];
+    }
+    return savedCities;
+  });
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function initializeCities() {
+      try {
+        const result = await customerService.getCities();
+
+        if (isActive) {
+          setCities(result);
+        }
+      } catch {
+        if (isActive) {
+          showNotification({
+            severity: 'error',
+            message: 'Não foi possível carregar as cidades. Tente novamente.',
+          });
+        }
+      }
+    }
+
+    void initializeCities();
+
+    return () => {
+      isActive = false;
+    };
+  }, [showNotification]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function initializeCustomers() {
+      try {
+        setLoading(true);
+
+        const activeColumnFilter = filterModel.items[0];
+
+        const isValueRequired =
+          activeColumnFilter?.operator !== 'isEmpty' &&
+          activeColumnFilter?.operator !== 'isNotEmpty';
+
+        const hasValidValue =
+          activeColumnFilter?.value !== undefined &&
+          activeColumnFilter?.value !== '' &&
+          (!Array.isArray(activeColumnFilter?.value) || activeColumnFilter.value.length > 0);
+
+        const shouldSendFilter = activeColumnFilter?.field && (!isValueRequired || hasValidValue);
+
+        const activeSort = sortModel[0];
+        const sortParam = activeSort
+          ? {
+              sortBy: activeSort.field as CustomerSortField,
+              sortOrder: activeSort.sort ?? 'asc',
+            }
+          : undefined;
+
+        const result = await customerService.getPaginated({
+          pagination: {
+            page: pagination.page + 1,
+            pageSize: pagination.pageSize,
+          },
+          filters: {
+            ...(selectedCities.length > 0 ? { cities: selectedCities } : {}),
+            ...(shouldSendFilter
+              ? {
+                  field: activeColumnFilter.field,
+                  operator: activeColumnFilter.operator ?? 'contains',
+                  ...(activeColumnFilter.value !== undefined
+                    ? { value: activeColumnFilter.value }
+                    : {}),
+                }
+              : {}),
+          },
+          ...(sortParam ? { sort: sortParam } : {}),
+        });
+
+        if (isActive) {
+          setCustomers(result.items);
+          setTotalItems(result.totalItems);
+        }
+      } catch {
+        if (isActive) {
+          showNotification({
+            severity: 'error',
+            message: 'Não foi possível carregar os clientes. Tente novamente.',
+          });
+        }
+      } finally {
+        if (isActive) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void initializeCustomers();
+
+    return () => {
+      isActive = false;
+    };
+  }, [
+    pagination.page,
+    pagination.pageSize,
+    selectedCities,
+    filterModel,
+    sortModel,
+    showNotification,
+  ]);
+
+  const handleApplyCityFilter = (nextCities: string[]) => {
+    setPagination((current) => ({
+      ...current,
+      page: 0,
+    }));
+
+    setSelectedCities(nextCities);
+    setSavedCities(nextCities);
+
+    setSearchParams(
+      (currentParams) => {
+        const nextParams = new URLSearchParams(currentParams);
+        nextParams.delete('city');
+
+        return nextParams;
+      },
+      { replace: true }
+    );
+  };
+
+  const handleClearCityFilter = () => {
+    handleApplyCityFilter([]);
+  };
+
+  const handlePaginationChange = (nextPagination: typeof pagination) => {
+    setPagination(nextPagination);
+  };
+
+  const handleFilterModelChange = (newModel: GridFilterModel) => {
+    setFilterModel(newModel);
+    setPagination((current) => ({ ...current, page: 0 }));
+  };
+
+  const handleSortModelChange = (newModel: GridSortModel) => {
+    setSortModel(newModel);
+  };
+
+  // TODO: Implementar funcionalidades futuras
+  const handleNotImplemented = (name: string) => {
+    showNotification({
+      severity: 'info',
+      message: `Funcionalidade '${name}' não implementada.`,
+    });
+  };
+
+  const columns: GridColDef<Customer>[] = [
+    {
+      field: 'id',
+      headerName: 'ID',
+      filterable: true,
+      sortable: true,
+      width: 80,
+    },
+    {
+      field: 'firstName',
+      headerName: 'Nome',
+      flex: 1,
+      minWidth: 140,
+      filterable: true,
+      sortable: true,
+    },
+    {
+      field: 'lastName',
+      headerName: 'Sobrenome',
+      flex: 1,
+      minWidth: 140,
+      filterable: true,
+      sortable: true,
+    },
+    {
+      field: 'email',
+      headerName: 'E-mail',
+      flex: 1.5,
+      minWidth: 220,
+      filterable: true,
+      sortable: true,
+    },
+    {
+      field: 'city',
+      headerName: 'Cidade',
+      flex: 1,
+      minWidth: 160,
+      filterable: true,
+      sortable: true,
+      renderCell: ({ row }) => {
+        const { city } = getCityAndState(row.city);
+
+        return (
+          <div className="customer-city-cell">
+            <span className="customer-city-name">{city}</span>
+          </div>
+        );
+      },
+    },
+    {
+      field: 'state',
+      headerName: 'UF',
+      width: 60,
+      minWidth: 60,
+      sortable: false,
+      filterable: false,
+      valueGetter: (_value, row) => getCityAndState(row.city).state || '—',
+    },
+    {
+      field: 'actions',
+      headerName: 'Ações',
+      renderHeader: () => <MoreVertIcon fontSize="small" />,
+      sortable: false,
+      filterable: false,
+      width: 80,
+      minWidth: 80,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: ({ row }) => (
+        <CustomDataGridRowActions
+          ariaLabel={`Ações de ${row.firstName} ${row.lastName}`}
+          actions={[
+            {
+              label: 'Editar / Detalhes',
+              icon: <EditNoteIcon fontSize="small" />,
+              onSelect: () => navigate(`/customers/${row.id}`),
+            },
+            {
+              label: 'Remover',
+              icon: <DeleteOutlineIcon fontSize="small" />,
+              onSelect: () => handleNotImplemented('Remover cliente'),
+              dividerBefore: true,
+            },
+          ]}
+        />
+      ),
+    },
+  ];
+
+  return (
+    <Box className="customers-container">
+      <PageHeaderComponent
+        title="Listagem de Clientes"
+        subtitle="Listagem centralizada e controle operacional de clientes cadastrados."
+        icon={<PeopleIcon />}
+        action={
+          <Button
+            className="page-header-action add-customer-button"
+            variant="contained"
+            startIcon={<PersonAddIcon />}
+            onClick={() => handleNotImplemented('Adicionar cliente')}
+          >
+            Adicionar cliente
+          </Button>
+        }
+      />
+
+      <main className="content">
+        <CustomCardComponent
+          title="Clientes"
+          headerAction={
+            <div className="customer-list-header-actions">
+              <CustomMultiSelectFilterComponent
+                options={cities}
+                value={selectedCities}
+                onApply={handleApplyCityFilter}
+                onClear={handleClearCityFilter}
+              />
+              {viewMode === 'cards' && (
+                <Tooltip title="Filtros avançados" placement="top" arrow>
+                  <IconButton
+                    className="customer-advanced-filter-toggle"
+                    aria-label={
+                      advancedFiltersOpen ? 'Fechar filtros avançados' : 'Abrir filtros avançados'
+                    }
+                    aria-expanded={advancedFiltersOpen}
+                    aria-controls="customer-card-advanced-filters"
+                    onClick={() => setAdvancedFiltersOpen((open) => !open)}
+                  >
+                    <TuneIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <ViewModeToggleComponent value={viewMode} onChange={setViewMode} />
+            </div>
+          }
+          footerInfo={`${totalItems} cliente(s) encontrado(s) para os filtros aplicados.`}
+        >
+          {viewMode === 'grid' ? (
+            <CustomDataGridComponent
+              selectionLabel={{ singular: 'cliente selecionado', plural: 'clientes selecionados' }}
+              selectionActions={
+                <>
+                  <Button
+                    className="custom-data-grid-selection-action"
+                    onClick={() => handleNotImplemented('Remover selecionados')}
+                  >
+                    <DeleteOutlineIcon />
+                    <span>Remover selecionados</span>
+                  </Button>
+                  <Button
+                    className="custom-data-grid-selection-action"
+                    onClick={() => handleNotImplemented('Remover todos os clientes')}
+                  >
+                    <DeleteOutlineIcon />
+                    <span>Remover todos os clientes</span>
+                  </Button>
+                  <Button
+                    className="custom-data-grid-selection-action custom-data-grid-selection-action--cancel"
+                    onClick={() => setSelectionModel({ type: 'include', ids: new Set() })}
+                  >
+                    <CloseIcon />
+                    <span>Cancelar seleção</span>
+                  </Button>
+                </>
+              }
+              checkboxSelection
+              checkboxPosition="first"
+              disableRowSelectionExcludeModel
+              keepNonExistentRowsSelected
+              rowSelectionModel={selectionModel}
+              onRowSelectionModelChange={setSelectionModel}
+              rows={customers}
+              columns={columns}
+              loading={loading}
+              paginationMode="server"
+              sortingMode="server"
+              filterMode="server"
+              paginationModel={pagination}
+              onPaginationModelChange={handlePaginationChange}
+              onFilterModelChange={handleFilterModelChange}
+              onSortModelChange={handleSortModelChange}
+              rowCount={totalItems}
+              pageSizeOptions={[5, 10, 25]}
+              disableRowSelectionOnClick
+            />
+          ) : (
+            <CustomerCardListComponent
+              customers={customers}
+              loading={loading}
+              pagination={pagination}
+              totalItems={totalItems}
+              filterModel={filterModel}
+              sortModel={sortModel}
+              selectionModel={selectionModel}
+              advancedFiltersOpen={advancedFiltersOpen}
+              onPaginationChange={handlePaginationChange}
+              onFilterModelChange={handleFilterModelChange}
+              onSortModelChange={handleSortModelChange}
+              onSelectionModelChange={setSelectionModel}
+              onCustomerSelect={(customer) => navigate(`/customers/${customer.id}`)}
+              onNotImplemented={handleNotImplemented}
+            />
+          )}
+        </CustomCardComponent>
+      </main>
+    </Box>
+  );
+}

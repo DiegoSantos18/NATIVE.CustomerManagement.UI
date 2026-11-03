@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Iniciar Vite (npm run dev)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "pattern": "Local:\\s+https?://localhost:(?<port>[0-9]+)",
+        "uriFormat": "http://localhost:%s",
+        "action": "debugWithChrome"
+      }
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug React (Chrome)",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMapPathOverrides": {
+        "vite/*": "${workspaceFolder}/*"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack UI (Vite + Chrome)",
+      "configurations": ["Iniciar Vite (npm run dev)"]
+    }
+  ]
+}

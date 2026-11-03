@@ -1,0 +1,27 @@
+.scroll-to-top-btn {
+  position: fixed !important;
+  bottom: 32px !important;
+  right: 24px !important;
+  z-index: 1150 !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border-radius: 50% !important;
+  background-color: var(--primary) !important;
+  color: var(--primary-contrast) !important;
+  box-shadow: var(--shadow-elevation, 0 4px 12px rgb(0 0 0 / 30%)) !important;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    opacity 0.2s ease !important;
+
+  svg {
+    font-size: 1.25rem !important;
+  }
+
+  &:hover {
+    background-color: var(--primary-hover) !important;
+    transform: translateY(-3px) !important;
+  }
+}

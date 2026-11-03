@@ -1,0 +1,445 @@
+.customer-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+
+  .customer-card-list-controls,
+  .customer-card-filter,
+  .customer-card-sort,
+  .customer-card-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .customer-card-advanced-filters {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 0.75rem;
+    background-color: var(--bg-surface-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+  }
+
+  .customer-card-list-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .customer-card-list-selection-controls {
+    display: flex;
+    min-width: 0;
+    min-height: 36px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-top: -0.25rem;
+  }
+
+  .customer-card-list-select-page {
+    min-width: 0;
+    margin: 0;
+    white-space: nowrap;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+
+    .MuiCheckbox-root {
+      padding: 6px;
+    }
+
+    .MuiFormControlLabel-label {
+      font-size: 0.85rem;
+    }
+  }
+
+  .customer-card-selection-toolbar {
+    min-height: 48px;
+    margin: -0.25rem 0 0;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--bg-surface-hover);
+
+    .custom-data-grid-selection-count {
+      padding: 0.35rem 0.5rem;
+      font-size: 0.82rem;
+    }
+
+    .custom-data-grid-selection-actions .custom-data-grid-selection-action {
+      min-width: 0;
+      min-height: 42px;
+      padding: 0.25rem 0.65rem;
+      flex-direction: row;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+
+      svg {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .customer-card-filter {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: 150px minmax(180px, 1fr);
+
+    .MuiFormControl-root:first-child {
+      min-width: 0;
+    }
+
+    .MuiFormControl-root:nth-child(2) {
+      min-width: 0;
+    }
+  }
+
+  .customer-card-sort {
+    display: grid;
+    grid-template-columns: minmax(160px, 1fr) 40px;
+
+    .MuiFormControl-root {
+      min-width: 0;
+    }
+
+    > span {
+      display: flex;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .MuiButton-root {
+      width: 40px;
+      min-width: 40px;
+      height: 40px;
+      padding: 0;
+    }
+  }
+
+  .customer-card-filter-actions {
+    display: flex;
+    flex-shrink: 0;
+    min-height: 32px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    white-space: nowrap;
+  }
+
+  .customer-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+    gap: 1rem;
+  }
+
+  .customer-list-card {
+    min-width: 0;
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    border-color: var(--border-color);
+    border-radius: 12px;
+    animation: customer-card-enter 260ms ease both;
+    animation-delay: calc(var(--card-index, 0) * 35ms);
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
+
+    &.customer-list-card--selected {
+      background-color: var(--accent-glow);
+      border-color: var(--primary);
+    }
+
+    &:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-elevation);
+      transform: translateY(-2px);
+    }
+
+    .MuiCardContent-root {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+
+      &:last-child {
+        padding-bottom: 1rem;
+      }
+    }
+  }
+
+  .customer-list-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .customer-list-card-identity {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+    gap: 0.25rem;
+
+    .MuiCheckbox-root {
+      flex-shrink: 0;
+      margin-left: -0.5rem;
+    }
+  }
+
+  .customer-list-card-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .customer-list-card-title {
+    min-width: 0;
+
+    .MuiTypography-overline {
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .MuiTypography-h6 {
+      overflow-wrap: anywhere;
+      color: var(--text-main);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+  }
+
+  .customer-list-card-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem 1rem;
+    margin: 0;
+
+    div {
+      min-width: 0;
+    }
+
+    dt {
+      margin-bottom: 0.2rem;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    dd {
+      overflow-wrap: anywhere;
+      margin: 0;
+      color: var(--text-main);
+      font-size: 0.875rem;
+    }
+  }
+
+  .customer-card-list-state {
+    display: flex;
+    min-height: 160px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .customer-card-list-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-width: 0;
+
+    .MuiTablePagination-root {
+      color: var(--text-muted);
+    }
+
+    .MuiTablePagination-toolbar {
+      display: flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0;
+    }
+
+    .MuiTablePagination-selectLabel {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .MuiTablePagination-input {
+      margin: 0 0 0 0.5rem;
+    }
+
+    .MuiTablePagination-select {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    .MuiPagination-ul {
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+@keyframes customer-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .customer-card-list {
+    .customer-card-list-controls {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .customer-card-sort {
+      justify-self: end;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .customer-card-list {
+    .customer-card-advanced-filters {
+      padding: 0.65rem;
+    }
+
+    .customer-card-list-select-page {
+      gap: 0;
+      font-size: 0.75rem;
+
+      .MuiCheckbox-root {
+        padding: 4px;
+      }
+
+      .MuiFormControlLabel-label {
+        font-size: 0.75rem;
+      }
+    }
+
+    .customer-card-filter-actions {
+      justify-content: flex-end;
+
+      .MuiButton-root {
+        min-width: 0;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+        font-size: 0.75rem;
+      }
+    }
+
+    .customer-card-filter {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    }
+
+    .customer-card-sort {
+      justify-self: stretch;
+      width: 100%;
+      grid-template-columns: minmax(0, 1fr) 40px;
+    }
+
+    .customer-card-list-pagination {
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.25rem;
+
+      .MuiTablePagination-root {
+        width: 100%;
+      }
+
+      .MuiTablePagination-toolbar {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.15rem 0.25rem;
+      }
+
+      .MuiTablePagination-selectLabel {
+        font-size: 0.75rem;
+      }
+
+      .MuiTablePagination-select {
+        font-size: 0.8rem;
+      }
+
+      .MuiPagination-root {
+        max-width: 100%;
+      }
+
+      .MuiPagination-ul {
+        justify-content: center;
+        gap: 0;
+      }
+
+      .MuiPaginationItem-root {
+        min-width: 30px;
+        height: 30px;
+        margin: 0;
+        font-size: 0.75rem;
+      }
+    }
+
+    .customer-card-selection-toolbar {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      .custom-data-grid-selection-count {
+        padding: 0.2rem 0.35rem;
+      }
+
+      .custom-data-grid-selection-actions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+
+        .custom-data-grid-selection-action {
+          min-height: 48px;
+          padding: 0.25rem 0.15rem;
+          flex-direction: column;
+          gap: 0.2rem;
+          font-size: 0.65rem;
+
+          span {
+            line-height: 1.15;
+          }
+        }
+      }
+    }
+
+    .customer-list-card-heading {
+      gap: 0.4rem;
+    }
+
+    .customer-list-card-actions {
+      gap: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .customer-card-list .customer-list-card {
+    animation: none;
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
