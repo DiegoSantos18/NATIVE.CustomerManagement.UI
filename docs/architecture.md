@@ -40,7 +40,7 @@ flowchart TB
 
     subgraph Hooks["Hooks Layer"]
         direction TB
-        CustomHooks["useSidebarToggle · useAppTheme · useFilterStorage"]
+        CustomHooks["useAppTheme · useFilterStorage"]
     end
 
     Hooks --> Services
