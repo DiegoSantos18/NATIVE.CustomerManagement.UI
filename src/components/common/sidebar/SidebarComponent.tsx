@@ -13,19 +13,27 @@ import {
 } from '@/components/common/mui';
 import { FooterComponent } from '../footer/FooterComponent';
 import { LogoDarkPNG, LogoLightPNG } from '@/assets';
-import { useSidebarToggle, useAppTheme } from '@/hooks';
+import { useAppTheme } from '@/hooks';
 import './SidebarComponent.scss';
 
-export function SidebarComponent() {
-  const { collapsed, toggle } = useSidebarToggle();
+interface SidebarComponentProps {
+  collapsed: boolean;
+  toggle: () => void;
+}
+
+export function SidebarComponent({ collapsed, toggle }: SidebarComponentProps) {
   const { mode } = useAppTheme();
   const location = useLocation();
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [openGroup, setOpenGroup] = useState<string | null>(() => {
+    return window.location.pathname.startsWith('/customers') ? 'customers' : null;
+  });
   const [, startTransition] = useTransition();
 
   useEffect(() => {
     startTransition(() => {
-      setOpenGroup(null);
+      if (!location.pathname.startsWith('/customers')) {
+        setOpenGroup(null);
+      }
     });
   }, [location.pathname]);
 
@@ -41,9 +49,7 @@ export function SidebarComponent() {
     setOpenGroup((current) => (current === 'customers' ? null : 'customers'));
   };
 
-  const handleNavClick = () => {
-    setOpenGroup(null);
-
+  const handleItemClick = () => {
     if (!collapsed) {
       toggle();
     }
@@ -74,7 +80,7 @@ export function SidebarComponent() {
           <Link
             to="/"
             className="brand-wrapper"
-            onClick={handleNavClick}
+            onClick={handleItemClick}
             aria-label="Página inicial"
           >
             <img src={logo} alt="" className="brand-logo" />
@@ -84,7 +90,10 @@ export function SidebarComponent() {
 
           <Tooltip title={collapsed ? 'Expandir menu' : 'Recolher menu'}>
             <IconButton
-              onClick={toggle}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggle();
+              }}
               size="small"
               className="edge-toggle-btn"
               aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}
@@ -104,7 +113,7 @@ export function SidebarComponent() {
             <Link
               to="/"
               className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}
-              onClick={handleNavClick}
+              onClick={handleItemClick}
               aria-current={location.pathname === '/' ? 'page' : undefined}
             >
               <DashboardIcon className="nav-icon" />
@@ -146,7 +155,7 @@ export function SidebarComponent() {
                   <Link
                     to="/customers"
                     className={`sub-nav-item ${location.pathname === '/customers' ? 'active' : ''}`}
-                    onClick={handleNavClick}
+                    onClick={handleItemClick}
                     aria-current={location.pathname === '/customers' ? 'page' : undefined}
                   >
                     Listagem de Clientes
