@@ -178,7 +178,7 @@ export function CustomerDetailsPage() {
       {/* Conteúdo dentro do Card Padrão */}
       <CustomCardComponent
         title="Formulário de Cadastro"
-        footerInfo="Clique em 'Salvar Alterações' para confirmar o envio dos dados atualizados."
+        footerInfo="Clique em 'Salvar Alterações' ou pelo atalho 'Ctrl + S' para confirmar o envio dos dados atualizados."
       >
         <div className="content-inner">
           {!id ? (

@@ -5,7 +5,7 @@ import { ThemeContextProvider } from './ThemeContextProvider';
 export function AppThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<'light' | 'dark'>(() => {
     const saved = localStorage.getItem('theme_mode');
-    return saved === 'light' || saved === 'dark' ? saved : 'dark';
+    return saved === 'light' || saved === 'dark' ? saved : 'light';
   });
 
   useEffect(() => {

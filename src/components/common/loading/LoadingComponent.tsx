@@ -13,7 +13,7 @@ export function LoadingComponent({
 }: LoadingComponentProps) {
   const { mode } = useAppTheme();
   const logo = mode === 'dark' ? LogoLightPNG : LogoDarkPNG;
-  const brandText = import.meta.env.VITE_APP_TITLE;
+  const brandText = import.meta.env.VITE_APP_NAME;
 
   return (
     <div

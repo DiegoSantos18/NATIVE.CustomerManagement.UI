@@ -1,12 +1,19 @@
 import type { CityCustomerCount } from '@/api/customers';
 
-/**
- * Separa a string de localização no formato "Cidade, UF" de forma segura.
- */
 export function getCityAndState(fullCity: string) {
-  const parts = fullCity.split(',').map((part) => part.trim());
+  const normalizedCity = fullCity.trim();
+  const stateSuffix = normalizedCity.match(/^(.+?)(?:\s*,\s*|\s+-\s+)([a-z]{2})$/i);
+
+  if (stateSuffix) {
+    return {
+      city: stateSuffix[1].trim(),
+      state: stateSuffix[2].toUpperCase(),
+    };
+  }
+
+  const parts = normalizedCity.split(',').map((part) => part.trim());
   const state = parts.length > 1 ? (parts.at(-1) ?? '') : '';
-  const city = parts.length > 1 ? parts.slice(0, -1).join(', ') : fullCity;
+  const city = parts.length > 1 ? parts.slice(0, -1).join(', ') : normalizedCity;
 
   return { city, state };
 }

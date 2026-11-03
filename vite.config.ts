@@ -18,4 +18,20 @@ export default defineConfig({
     port: 4200,
     strictPort: true,
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            {
+              name: 'mui-x',
+              test: /node_modules[\\/]@mui[\\/]x-data-grid[\\/]/,
+              includeDependenciesRecursively: false,
+              priority: 10,
+            },
+          ],
+        },
+      },
+    },
+  },
 });

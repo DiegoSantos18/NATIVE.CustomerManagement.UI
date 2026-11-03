@@ -1,0 +1,31 @@
+.view-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.15rem;
+  background-color: var(--bg-surface-hover);
+  border: 1px solid var(--border-color);
+  border-radius: 9px;
+
+  .MuiIconButton-root {
+    width: 32px;
+    height: 32px;
+    color: var(--text-muted);
+    border-radius: 7px;
+
+    &[aria-pressed='true'] {
+      color: var(--primary);
+      background-color: var(--accent-glow);
+    }
+
+    &:hover {
+      color: var(--primary);
+      background-color: var(--accent-glow);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--border-focus);
+      outline-offset: 1px;
+    }
+  }
+}

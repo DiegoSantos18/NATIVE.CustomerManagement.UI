@@ -79,7 +79,7 @@ export function SidebarComponent() {
           >
             <img src={logo} alt="" className="brand-logo" />
 
-            {!collapsed && <span className="brand-title">{import.meta.env.VITE_APP_TITLE}</span>}
+            {!collapsed && <span className="brand-title">{import.meta.env.VITE_APP_NAME}</span>}
           </Link>
 
           <Tooltip title={collapsed ? 'Expandir menu' : 'Recolher menu'}>

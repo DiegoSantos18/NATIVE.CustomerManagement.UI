@@ -1,71 +1,8 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.5rem;
   min-width: 0;
-
-  .dashboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    min-width: 0;
-
-    .dashboard-heading {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      min-width: 0;
-    }
-
-    .title-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      min-width: 0;
-
-      .header-icon {
-        flex-shrink: 0;
-        color: var(--primary);
-        font-size: 2rem;
-      }
-
-      .page-title {
-        min-width: 0;
-        color: var(--text-main);
-        font-size: 1.75rem;
-        font-weight: 700;
-      }
-    }
-
-    .page-subtitle {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .refresh-button {
-      flex-shrink: 0;
-      color: var(--primary);
-      border-color: var(--border-color);
-      border-radius: 9px;
-      font-weight: 600;
-      text-transform: none;
-      transition:
-        color 0.2s ease,
-        background-color 0.2s ease,
-        border-color 0.2s ease;
-
-      &:hover {
-        border-color: var(--primary);
-        background-color: var(--accent-glow);
-      }
-
-      &:focus-visible {
-        outline: 2px solid var(--border-focus);
-        outline-offset: 2px;
-      }
-    }
-  }
 
   .dashboard-grid {
     display: grid;
@@ -150,6 +87,28 @@
     min-width: 0;
   }
 
+  .dashboard-city-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    min-width: 0;
+
+    .custom-multi-select-filter {
+      flex: 0 1 auto;
+    }
+  }
+
+  .dashboard-city-cards-loading {
+    display: flex;
+    min-height: 160px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: var(--text-muted);
+  }
+
   .city-cell-icon {
     display: inline-flex;
     align-items: center;
@@ -205,10 +164,6 @@
 
 @media (max-width: 768px) {
   .dashboard-container {
-    .dashboard-header {
-      align-items: flex-start;
-    }
-
     .dashboard-grid {
       grid-template-columns: 1fr;
       gap: 1rem;
@@ -217,18 +172,26 @@
         min-height: 140px;
       }
     }
+
+    .dashboard-city-actions {
+      justify-content: flex-end;
+      width: 100%;
+    }
   }
 }
 
 @media (max-width: 480px) {
   .dashboard-container {
-    .dashboard-header {
+    .dashboard-city-actions {
+      align-items: stretch;
       flex-direction: column;
 
-      .title-wrapper {
-        .page-title {
-          font-size: 1.5rem;
-        }
+      .view-mode-toggle {
+        align-self: flex-start;
+      }
+
+      .custom-multi-select-filter {
+        width: 100%;
       }
     }
 
@@ -265,7 +228,7 @@
 @media (prefers-reduced-motion: reduce) {
   .dashboard-container {
     .metric-card,
-    .refresh-button {
+    .page-header-action {
       transition: none !important;
     }
 

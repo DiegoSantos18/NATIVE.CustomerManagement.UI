@@ -15,4 +15,5 @@ export type CustomerFormData = z.input<typeof customerFormSchema>;
 export interface CustomerFormErrors {
   firstName: string;
   email: string;
+  gender?: string;
 }
