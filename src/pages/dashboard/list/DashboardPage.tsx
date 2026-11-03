@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { customerService, type CityCustomerCount } from '@/api/customers';
+import {
+  customerService,
+  subscribeToCustomerUpdates,
+  type CityCustomerCount,
+} from '@/api/customers';
 import {
   DashboardIcon,
   PeopleIcon,
@@ -59,7 +63,7 @@ export function DashboardPage() {
     return customerService.getTotalByCity();
   }, []);
 
-  const loadDashboard = async () => {
+  const loadDashboard = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -75,8 +79,9 @@ export function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchDashboard, showNotification]);
 
+  // Carregamento inicial via HTTP
   useEffect(() => {
     let isActive = true;
 
@@ -107,6 +112,17 @@ export function DashboardPage() {
       isActive = false;
     };
   }, [fetchDashboard, showNotification]);
+
+  // Carregamento via Socket.io (subscribe)
+  useEffect(() => {
+    const unsubscribe = subscribeToCustomerUpdates(() => {
+      void loadDashboard();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [loadDashboard]);
 
   const metrics = useMemo(() => calculateDashboardMetrics(cities), [cities]);
 
