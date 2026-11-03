@@ -1,11 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import {
-  HomeIcon,
-  GroupIcon,
-  EditDocumentIcon,
-  NavigateNextIcon,
-  Breadcrumbs,
-} from '@/components/common/mui';
+import { HomeIcon, NavigateNextIcon, Breadcrumbs } from '@/components/common/mui';
+import type { ReactNode } from 'react';
 import { ROUTE_CONFIG } from '@/routes/routeConfig';
 import './BreadcrumbComponent.scss';
 
@@ -13,13 +8,9 @@ export function BreadcrumbComponent() {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(Boolean);
 
-  const getIcon = (segment: string) => {
-    if (!segment) return <HomeIcon fontSize="small" />;
-    if (!isNaN(Number(segment))) return <EditDocumentIcon fontSize="small" />;
-    return <GroupIcon fontSize="small" />;
-  };
-
-  const items = [{ label: 'Home', path: '/', icon: <HomeIcon fontSize="small" /> }];
+  const items: { label: string; path: string; icon?: ReactNode }[] = [
+    { label: 'Home', path: '/', icon: <HomeIcon fontSize="small" /> },
+  ];
 
   let accumulated = '';
   pathnames.forEach((segment) => {
@@ -37,7 +28,7 @@ export function BreadcrumbComponent() {
     const last = items[items.length - 1];
     if (last && last.label.toLowerCase() === label.toLowerCase()) return;
 
-    items.push({ label, path: accumulated, icon: getIcon(segment) });
+    items.push({ label, path: accumulated });
   });
 
   return (
@@ -49,12 +40,12 @@ export function BreadcrumbComponent() {
 
             return !isLast ? (
               <Link key={item.path} to={item.path} className="breadcrumb-link">
-                <span className="breadcrumb-icon">{item.icon}</span>
+                {item.icon && <span className="breadcrumb-icon">{item.icon}</span>}
                 <span>{item.label}</span>
               </Link>
             ) : (
               <span key={item.path} className="breadcrumb-current">
-                <span className="breadcrumb-icon">{item.icon}</span>
+                {item.icon && <span className="breadcrumb-icon">{item.icon}</span>}
                 <span>{item.label}</span>
               </span>
             );

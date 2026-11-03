@@ -4,20 +4,29 @@ import { customerService, type Customer, type CustomerSortField } from '@/api/cu
 import {
   PeopleIcon,
   EditNoteIcon,
+  PersonAddIcon,
+  DeleteOutlineIcon,
+  CloseIcon,
   TuneIcon,
+  MoreVertIcon,
+  Box,
+  Button,
   IconButton,
   Tooltip,
-  Box,
-  Typography,
   type GridColDef,
   type GridFilterModel,
+  type GridRowSelectionModel,
   type GridSortModel,
 } from '@/components/common/mui';
 import {
   CustomCardComponent,
   CustomDataGridComponent,
+  CustomDataGridRowActions,
   CustomMultiSelectFilterComponent,
+  PageHeaderComponent,
+  ViewModeToggleComponent,
 } from '@/components/common';
+import { CustomerCardListComponent } from './components/customer-card-list';
 import { useNotification, useFilterStorage } from '@/hooks';
 import { getCityAndState } from '@/utils';
 import './CustomersPage.scss';
@@ -42,7 +51,12 @@ export function CustomersPage() {
   const [sortModel, setSortModel] = useState<GridSortModel>([]);
   const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
   const [totalItems, setTotalItems] = useState(0);
-
+  const [viewMode, setViewMode] = useState<'grid' | 'cards'>('grid');
+  const [advancedFiltersOpen, setAdvancedFiltersOpen] = useState(false);
+  const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>({
+    type: 'include',
+    ids: new Set(),
+  });
   const [savedCities, setSavedCities] = useFilterStorage<string[]>(CUSTOMERS_CITY_FILTER_KEY, []);
 
   const [selectedCities, setSelectedCities] = useState<string[]>(() => {
@@ -197,6 +211,14 @@ export function CustomersPage() {
     setSortModel(newModel);
   };
 
+  // TODO: Implementar funcionalidades futuras
+  const handleNotImplemented = (name: string) => {
+    showNotification({
+      severity: 'info',
+      message: `Funcionalidade '${name}' não implementada.`,
+    });
+  };
+
   const columns: GridColDef<Customer>[] = [
     {
       field: 'id',
@@ -258,7 +280,7 @@ export function CustomersPage() {
     {
       field: 'actions',
       headerName: 'Ações',
-      renderHeader: () => <TuneIcon style={{ fontSize: '1.1rem' }} />,
+      renderHeader: () => <MoreVertIcon fontSize="small" />,
       sortable: false,
       filterable: false,
       width: 80,
@@ -266,71 +288,141 @@ export function CustomersPage() {
       align: 'center',
       headerAlign: 'center',
       renderCell: ({ row }) => (
-        <Tooltip
-          title={`Editar / Detalhes de ${row.firstName} ${row.lastName}`}
-          placement="top"
-          arrow
-        >
-          <IconButton
-            className="view-customer-button"
-            aria-label={`Visualizar detalhes de ${row.firstName} ${row.lastName}`}
-            onClick={() => navigate(`/customers/${row.id}`)}
-          >
-            <EditNoteIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
+        <CustomDataGridRowActions
+          ariaLabel={`Ações de ${row.firstName} ${row.lastName}`}
+          actions={[
+            {
+              label: 'Editar / Detalhes',
+              icon: <EditNoteIcon fontSize="small" />,
+              onSelect: () => navigate(`/customers/${row.id}`),
+            },
+            {
+              label: 'Remover',
+              icon: <DeleteOutlineIcon fontSize="small" />,
+              onSelect: () => handleNotImplemented('Remover cliente'),
+              dividerBefore: true,
+            },
+          ]}
+        />
       ),
     },
   ];
 
   return (
     <Box className="customers-container">
-      <div className="page-header">
-        <div className="title-wrapper">
-          <PeopleIcon className="header-icon" />
-
-          <Typography variant="h4" component="h1" className="page-title">
-            Listagem de Clientes
-          </Typography>
-        </div>
-
-        <Typography variant="body2" className="page-subtitle">
-          Listagem centralizada e controle operacional de clientes cadastrados.
-        </Typography>
-      </div>
+      <PageHeaderComponent
+        title="Listagem de Clientes"
+        subtitle="Listagem centralizada e controle operacional de clientes cadastrados."
+        icon={<PeopleIcon />}
+        action={
+          <Button
+            className="page-header-action add-customer-button"
+            variant="contained"
+            startIcon={<PersonAddIcon />}
+            onClick={() => handleNotImplemented('Adicionar cliente')}
+          >
+            Adicionar cliente
+          </Button>
+        }
+      />
 
       <main className="content">
         <CustomCardComponent
           title="Clientes"
-          subtitle="Consulta e gerenciamento da base de clientes."
-          icon={<PeopleIcon />}
           headerAction={
-            <CustomMultiSelectFilterComponent
-              options={cities}
-              value={selectedCities}
-              onApply={handleApplyCityFilter}
-              onClear={handleClearCityFilter}
-            />
+            <div className="customer-list-header-actions">
+              <CustomMultiSelectFilterComponent
+                options={cities}
+                value={selectedCities}
+                onApply={handleApplyCityFilter}
+                onClear={handleClearCityFilter}
+              />
+              {viewMode === 'cards' && (
+                <Tooltip title="Filtros avançados" placement="top" arrow>
+                  <IconButton
+                    className="customer-advanced-filter-toggle"
+                    aria-label={
+                      advancedFiltersOpen ? 'Fechar filtros avançados' : 'Abrir filtros avançados'
+                    }
+                    aria-expanded={advancedFiltersOpen}
+                    aria-controls="customer-card-advanced-filters"
+                    onClick={() => setAdvancedFiltersOpen((open) => !open)}
+                  >
+                    <TuneIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <ViewModeToggleComponent value={viewMode} onChange={setViewMode} />
+            </div>
           }
           footerInfo={`${totalItems} cliente(s) encontrado(s) para os filtros aplicados.`}
         >
-          <CustomDataGridComponent
-            checkboxSelection
-            checkboxPosition="first"
-            rows={customers}
-            columns={columns}
-            loading={loading}
-            paginationMode="server"
-            sortingMode="server"
-            filterMode="server"
-            paginationModel={pagination}
-            onPaginationModelChange={handlePaginationChange}
-            onFilterModelChange={handleFilterModelChange}
-            onSortModelChange={handleSortModelChange}
-            rowCount={totalItems}
-            pageSizeOptions={[5, 10, 25]}
-            disableRowSelectionOnClick
-          />
+          {viewMode === 'grid' ? (
+            <CustomDataGridComponent
+              selectionLabel={{ singular: 'cliente selecionado', plural: 'clientes selecionados' }}
+              selectionActions={
+                <>
+                  <Button
+                    className="custom-data-grid-selection-action"
+                    onClick={() => handleNotImplemented('Remover selecionados')}
+                  >
+                    <DeleteOutlineIcon />
+                    <span>Remover selecionados</span>
+                  </Button>
+                  <Button
+                    className="custom-data-grid-selection-action"
+                    onClick={() => handleNotImplemented('Remover todos os clientes')}
+                  >
+                    <DeleteOutlineIcon />
+                    <span>Remover todos os clientes</span>
+                  </Button>
+                  <Button
+                    className="custom-data-grid-selection-action custom-data-grid-selection-action--cancel"
+                    onClick={() => setSelectionModel({ type: 'include', ids: new Set() })}
+                  >
+                    <CloseIcon />
+                    <span>Cancelar seleção</span>
+                  </Button>
+                </>
+              }
+              checkboxSelection
+              checkboxPosition="first"
+              disableRowSelectionExcludeModel
+              keepNonExistentRowsSelected
+              rowSelectionModel={selectionModel}
+              onRowSelectionModelChange={setSelectionModel}
+              rows={customers}
+              columns={columns}
+              loading={loading}
+              paginationMode="server"
+              sortingMode="server"
+              filterMode="server"
+              paginationModel={pagination}
+              onPaginationModelChange={handlePaginationChange}
+              onFilterModelChange={handleFilterModelChange}
+              onSortModelChange={handleSortModelChange}
+              rowCount={totalItems}
+              pageSizeOptions={[5, 10, 25]}
+              disableRowSelectionOnClick
+            />
+          ) : (
+            <CustomerCardListComponent
+              customers={customers}
+              loading={loading}
+              pagination={pagination}
+              totalItems={totalItems}
+              filterModel={filterModel}
+              sortModel={sortModel}
+              selectionModel={selectionModel}
+              advancedFiltersOpen={advancedFiltersOpen}
+              onPaginationChange={handlePaginationChange}
+              onFilterModelChange={handleFilterModelChange}
+              onSortModelChange={handleSortModelChange}
+              onSelectionModelChange={setSelectionModel}
+              onCustomerSelect={(customer) => navigate(`/customers/${customer.id}`)}
+              onNotImplemented={handleNotImplemented}
+            />
+          )}
         </CustomCardComponent>
       </main>
     </Box>

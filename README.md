@@ -9,11 +9,11 @@ Interface Web Front-end desenvolvida em React 19 com TypeScript, Vite e SCSS, es
 - **Core / Runtime:** Node.js v26.5.0 (gerenciado via `.nvmrc`)
 - **Linguagem:** TypeScript
 - **Framework / Build Tool:** React 19 + Vite (Porta `4200`)
-- **UI Framework / Design System:** Material Design (MUI v6) com centralização em `src/components/common/mui`
+- **UI Framework / Design System:** Material Design (MUI v9) com centralização em `src/components/common/mui`
 - **Estilização & Temas:** SCSS centralizado em `src/assets/styles/_variables.scss` (suporte a Dark/Light mode via atributos `[data-theme]`) + Emotion
 - **Roteamento:** React Router DOM (v7) com Code Splitting (`React.lazy` + `Suspense`)
 - **Comunicação Real-time:** Socket.io-client
-- **Testes & Qualidade:** Vitest + ESLint v9 + Prettier + Madge (verificação de dependências circulares)
+- **Testes & Qualidade:** Vitest + ESLint v10 + Prettier + Madge (verificação de dependências circulares)
 
 ---
 

@@ -33,6 +33,12 @@
     min-width: 0;
   }
 
+  &__field-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
   .form-actions {
     display: flex;
     flex-direction: column-reverse;

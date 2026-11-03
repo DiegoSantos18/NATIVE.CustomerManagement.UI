@@ -37,7 +37,7 @@ export function FooterComponent({ variant = 'layout' }: FooterComponentProps) {
               alt="Logo"
               className="brand-logo"
             />
-            {import.meta.env.VITE_APP_TITLE_1}
+            {import.meta.env.VITE_APP_SHORT_NAME}
           </a>
         </div>
       </div>

@@ -23,7 +23,6 @@ $font-sans:
 // TEMA ESCURO
 // ==========================================================================
 
-:root,
 [data-theme='dark'] {
   color-scheme: dark;
 
@@ -120,13 +119,14 @@ $font-sans:
   --grid-row-hover: rgba(136, 19, 55, 0.12);
   --grid-row-selected: rgba(136, 19, 55, 0.22);
   --grid-row-selected-hover: rgba(136, 19, 55, 0.32);
-  --grid-selection-control: #f36d20;
+  --grid-selection-control: var(--primary);
 }
 
 // ==========================================================================
 // TEMA CLARO
 // ==========================================================================
 
+:root:not([data-theme]),
 [data-theme='light'] {
   color-scheme: light;
 
@@ -223,5 +223,5 @@ $font-sans:
   --grid-row-hover: rgba(136, 19, 55, 0.045);
   --grid-row-selected: rgba(136, 19, 55, 0.085);
   --grid-row-selected-hover: rgba(136, 19, 55, 0.13);
-  --grid-selection-control: #881337;
+  --grid-selection-control: var(--primary);
 }

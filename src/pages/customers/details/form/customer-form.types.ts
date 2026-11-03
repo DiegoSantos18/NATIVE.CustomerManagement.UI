@@ -1,3 +1,6 @@
+import type { z } from 'zod';
+import { customerFormSchema } from './customer-form.schema';
+
 export interface CustomerFormProps {
   formData: CustomerFormData;
   formErrors: CustomerFormErrors;
@@ -7,16 +10,10 @@ export interface CustomerFormProps {
   onReset: () => void;
 }
 
-export interface CustomerFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  gender: string;
-  company: string;
-  city: string;
-  title: string;
-}
+export type CustomerFormData = z.input<typeof customerFormSchema>;
 
 export interface CustomerFormErrors {
+  firstName: string;
   email: string;
+  gender?: string;
 }

@@ -11,13 +11,17 @@ import {
   PaginationItem,
   TablePagination,
   Tooltip,
+  Typography,
 } from '@/components/common/mui';
+import type { ReactNode } from 'react';
 import './CustomDataGridComponent.scss';
 
 type CheckboxPosition = 'first' | 'last';
 
 export type CustomDataGridComponentProps<T extends object> = DataGridProps<T> & {
   checkboxPosition?: CheckboxPosition;
+  selectionActions?: ReactNode;
+  selectionLabel?: { singular: string; plural: string };
 };
 
 function CustomPagination() {
@@ -27,15 +31,7 @@ function CustomPagination() {
   const rowCount = useGridSelector(apiRef, gridRowCountSelector);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        padding: '0 8px',
-      }}
-    >
+    <div className="custom-data-grid-pagination">
       <TablePagination
         component="div"
         count={rowCount}
@@ -67,6 +63,7 @@ function CustomPagination() {
         onChange={(_event, value) => {
           apiRef.current.setPage(value - 1);
         }}
+        siblingCount={1}
         showFirstButton
         showLastButton
         renderItem={(item) => {
@@ -105,9 +102,15 @@ export function CustomDataGridComponent<T extends object>({
   getRowClassName,
   slotProps,
   checkboxPosition = 'first',
+  selectionActions,
+  selectionLabel = { singular: 'item selecionado', plural: 'itens selecionados' },
   ...props
 }: CustomDataGridComponentProps<T>) {
   const checkboxSelection = props.checkboxSelection ?? false;
+  const selectedRowCount =
+    props.rowSelectionModel?.type === 'exclude'
+      ? Math.max(0, (props.rowCount ?? rows?.length ?? 0) - props.rowSelectionModel.ids.size)
+      : (props.rowSelectionModel?.ids.size ?? 0);
   const checkboxField = '__check__';
   const checkboxWidth = 48;
 
@@ -125,6 +128,19 @@ export function CustomDataGridComponent<T extends object>({
 
   return (
     <>
+      {selectionActions && selectedRowCount > 0 && (
+        <div
+          className="custom-data-grid-selection-toolbar"
+          role="toolbar"
+          aria-label="Ações em lote"
+        >
+          <Typography className="custom-data-grid-selection-count" variant="body2">
+            {selectedRowCount}{' '}
+            {selectedRowCount === 1 ? selectionLabel.singular : selectionLabel.plural}
+          </Typography>
+          <div className="custom-data-grid-selection-actions">{selectionActions}</div>
+        </div>
+      )}
       {stickyFirstField && (
         <style>{`
           @media (min-width: 769px) {

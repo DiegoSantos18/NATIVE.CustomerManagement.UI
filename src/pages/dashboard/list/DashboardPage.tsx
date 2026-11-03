@@ -10,13 +10,13 @@ import {
   LocationCityIcon,
   FlagIcon,
   Box,
-  Typography,
   Button,
   IconButton,
   Tooltip,
   CircularProgress,
-  TuneIcon,
+  MoreVertIcon,
   type GridColDef,
+  type GridSortModel,
 } from '@/components/common/mui';
 import {
   CountUpComponent,
@@ -25,7 +25,11 @@ import {
   CustomCardComponent,
   CustomDataGridComponent,
   CustomMultiSelectFilterComponent,
+  PageHeaderComponent,
+  ViewModeToggleComponent,
+  type DataViewMode,
 } from '@/components/common';
+import { DashboardCityCardsComponent } from './components/dashboard-city-cards/DashboardCityCardsComponent';
 import { useNotification, useFilterStorage } from '@/hooks';
 import { getCityAndState, calculateDashboardMetrics } from '@/utils';
 import './DashboardPage.scss';
@@ -41,6 +45,11 @@ export function DashboardPage() {
   const [cities, setCities] = useState<CityCustomerCount[]>([]);
   const [loading, setLoading] = useState(true);
   const [progressAnimationKey, setProgressAnimationKey] = useState(0);
+  const [viewMode, setViewMode] = useState<DataViewMode>('cards');
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
+  const [sortModel, setSortModel] = useState<GridSortModel>([
+    { field: 'customersTotal', sort: 'desc' },
+  ]);
   const [selectedCities, setSelectedCities] = useFilterStorage<string[]>(
     DASHBOARD_CITY_FILTER_KEY,
     []
@@ -109,6 +118,25 @@ export function DashboardPage() {
     return cities.filter((item) => selectedCities.includes(item.city));
   }, [cities, selectedCities]);
 
+  const sortedCities = useMemo(() => {
+    const activeSort = sortModel[0];
+    if (!activeSort?.sort) return filteredCities;
+
+    return [...filteredCities].sort((first, second) => {
+      const comparison =
+        activeSort.field === 'city'
+          ? first.city.localeCompare(second.city, 'pt-BR')
+          : first.customersTotal - second.customersTotal;
+      return activeSort.sort === 'asc' ? comparison : -comparison;
+    });
+  }, [filteredCities, sortModel]);
+
+  const pageCount = Math.max(1, Math.ceil(sortedCities.length / paginationModel.pageSize));
+  const activePaginationModel = {
+    ...paginationModel,
+    page: Math.min(paginationModel.page, pageCount - 1),
+  };
+
   const columns: GridColDef<CityCustomerCount>[] = [
     {
       field: 'city',
@@ -156,7 +184,7 @@ export function DashboardPage() {
     {
       field: 'actions',
       headerName: 'Ações',
-      renderHeader: () => <TuneIcon style={{ fontSize: '1.1rem' }} />,
+      renderHeader: () => <MoreVertIcon fontSize="small" />,
       sortable: false,
       filterable: false,
       width: 80,
@@ -179,31 +207,22 @@ export function DashboardPage() {
 
   return (
     <Box className="dashboard-container">
-      <div className="dashboard-header">
-        <div className="dashboard-heading">
-          <div className="title-wrapper">
-            <DashboardIcon className="header-icon" />
-
-            <Typography variant="h4" component="h1" className="page-title">
-              Dashboard
-            </Typography>
-          </div>
-
-          <Typography variant="body2" className="page-subtitle">
-            Bem-vindo(a) ao painel de gestão e controle de clientes.
-          </Typography>
-        </div>
-
-        <Button
-          className="refresh-button"
-          variant="outlined"
-          startIcon={loading ? <CircularProgress size={16} color="inherit" /> : <RefreshIcon />}
-          onClick={() => void loadDashboard()}
-          disabled={loading}
-        >
-          Atualizar
-        </Button>
-      </div>
+      <PageHeaderComponent
+        title="Dashboard"
+        subtitle="Bem-vindo(a) ao painel de gestão e controle de clientes."
+        icon={<DashboardIcon />}
+        action={
+          <Button
+            className="page-header-action page-header-action--outlined"
+            variant="outlined"
+            startIcon={loading ? <CircularProgress size={16} color="inherit" /> : <RefreshIcon />}
+            onClick={() => void loadDashboard()}
+            disabled={loading}
+          >
+            Atualizar
+          </Button>
+        }
+      />
 
       <div className="dashboard-grid">
         <MetricCardComponent
@@ -259,26 +278,57 @@ export function DashboardPage() {
         subtitle="Distribuição de clientes nas cidades."
         icon={<PeopleIcon />}
         headerAction={
-          <CustomMultiSelectFilterComponent
-            options={cities.map((item) => item.city)}
-            value={selectedCities}
-            onApply={setSelectedCities}
-            onClear={() => setSelectedCities([])}
-          />
+          <div className="dashboard-city-actions">
+            <CustomMultiSelectFilterComponent
+              options={cities.map((item) => item.city)}
+              value={selectedCities}
+              onApply={(value) => {
+                setSelectedCities(value);
+                setPaginationModel((current) => ({ ...current, page: 0 }));
+              }}
+              onClear={() => {
+                setSelectedCities([]);
+                setPaginationModel((current) => ({ ...current, page: 0 }));
+              }}
+            />
+            <ViewModeToggleComponent
+              value={viewMode}
+              onChange={(mode) => {
+                setViewMode(mode);
+                setPaginationModel((current) => ({ ...current, page: 0 }));
+              }}
+            />
+          </div>
         }
         footerInfo={`${filteredCities.length} localidade(s) encontrada(s) para os filtros aplicados.`}
       >
-        <CustomDataGridComponent
-          rows={filteredCities}
-          columns={columns}
-          getRowId={(row) => row.city}
-          loading={loading}
-          initialState={{
-            sorting: {
-              sortModel: [{ field: 'customersTotal', sort: 'desc' }],
-            },
-          }}
-        />
+        {viewMode === 'cards' ? (
+          loading ? (
+            <div className="dashboard-city-cards-loading" role="status">
+              <CircularProgress size={26} />
+              <span>Carregando cidades...</span>
+            </div>
+          ) : (
+            <DashboardCityCardsComponent
+              cities={sortedCities}
+              maxCustomersByCity={metrics.maxCustomersByCity}
+              paginationModel={activePaginationModel}
+              onPaginationModelChange={setPaginationModel}
+              onCitySelect={(city) => navigate(`/customers?city=${encodeURIComponent(city)}`)}
+            />
+          )
+        ) : (
+          <CustomDataGridComponent
+            rows={filteredCities}
+            columns={columns}
+            getRowId={(row) => row.city}
+            loading={loading}
+            paginationModel={activePaginationModel}
+            onPaginationModelChange={setPaginationModel}
+            sortModel={sortModel}
+            onSortModelChange={setSortModel}
+          />
+        )}
       </CustomCardComponent>
     </Box>
   );

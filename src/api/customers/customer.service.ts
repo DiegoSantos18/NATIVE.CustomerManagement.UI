@@ -1,5 +1,5 @@
 import { api, type PaginatedResult } from '@/api/common';
-import type { CityCustomerCount, Customer, ListCustomersParams } from './types';
+import type { CityCustomerCount, Customer, ListCustomersParams, UpdateCustomerData } from './types';
 
 const CUSTOMER_BASE_URL = '/customers';
 
@@ -29,7 +29,7 @@ export const customerService = {
     return data;
   },
 
-  async update(id: number | string, customerData: Partial<Customer>): Promise<Customer> {
+  async update(id: number | string, customerData: UpdateCustomerData): Promise<Customer> {
     const { data } = await api.put<Customer>(`${CUSTOMER_BASE_URL}/${id}`, customerData);
     return data;
   },
